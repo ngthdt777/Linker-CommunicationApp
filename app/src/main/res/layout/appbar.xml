@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingHorizontal="10dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:id="@+id/app_bar_layout"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/app_bar_pic"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/avatar_sample"
+        />
+
+    <TextView
+        android:id="@+id/app_bar_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fragment Name"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:layout_marginStart="15dp"
+        />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
+    </Space>
+
+    <ImageButton
+        android:id="@+id/appbar_call_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/baseline_call_24"
+        android:contentDescription="Call icon" />
+
+</LinearLayout>

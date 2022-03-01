@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    >
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:id="@+id/search_linearlayout_info"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/search_icon_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/avatar_sample"
+            >
+        </de.hdodenhof.circleimageview.CircleImageView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nguyen"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:id="@+id/search_item_first_name"
+            >
+
+        </TextView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <ImageView
+        android:id="@+id/search_item_remove_button"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/round_cancel_24"
+        android:layout_alignEnd="@id/search_linearlayout_info"
+        />
+</RelativeLayout>

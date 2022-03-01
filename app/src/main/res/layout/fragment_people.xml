@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/add_friend_activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:backgroundTint="@color/light_blue"
+        app:title="Add Friend"
+        app:titleTextColor="@color/white"
+        >
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/search_people_bar"
+        android:hint="Enter name..."
+        android:background="@drawable/search_people_input"
+        android:drawableStart="@drawable/outline_search_24"
+        android:drawablePadding="10dp"
+        android:paddingStart="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:textSize="20sp"
+        android:inputType="text"
+        android:layout_marginTop="15dp"
+        >
+    </EditText>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/add_friend_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/people_item"
+        android:layout_marginTop="15dp"
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

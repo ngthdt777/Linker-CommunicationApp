@@ -1,0 +1,82 @@
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="10dp"
+        android:gravity="center_vertical"
+        >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/sample"
+                android:padding="5dp" />
+            <ImageView
+                android:id="@+id/chat_group_profile_pic"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignTop="@id/profile_image"
+                android:layout_alignRight="@id/profile_image"
+                android:src="@drawable/round_button"
+                android:layout_marginStart="10dp"
+                android:visibility="gone"
+                />
+                <!--app:civ_border_width="4dp"
+                app:civ_border_color="@color/green"-->
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/chat_list_status"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_alignBottom="@id/profile_image"
+                android:layout_alignRight="@id/profile_image"
+                android:src="@drawable/button"
+                app:tint="@color/green"
+                />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="15dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nguyen Van An"
+                android:id="@+id/contact_name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                />
+
+            <TextView
+                android:id="@+id/last_chat_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="You: Hi how're you doing?"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
