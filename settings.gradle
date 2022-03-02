@@ -10,6 +10,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            name "linphone.org maven repository"
+            url "https://linphone.org/maven_repository/"
+            content {
+                includeGroup "org.linphone"
+            }
+        }
     }
 }
 rootProject.name = "Linker-Kotlin"
