@@ -74,7 +74,7 @@ class LoginService private constructor(){
         core.clearAllAuthInfo()
     }
 
-    fun setOnAccountRegisterStateChanged(){
+    fun setOnAccountRegisterStateChanged(context : LoginActivity){
          val coreListener = object: CoreListenerStub(){
             override fun onAccountRegistrationStateChanged(core: Core, account: Account,
                                                         state: RegistrationState?, message: String)
@@ -86,13 +86,13 @@ class LoginService private constructor(){
                 }
                 else if (state == RegistrationState.Failed){
                     //CurrentUser.getInstance().setStatus(0)
-                    //context.changeLoginStatusText("Login Failed", Color.RED,true)
+                    context.changeLoginStatusText("Login Failed", Color.RED,true)
                 }
                 else if (state == RegistrationState.Ok){
                     val userID = "sip:$mUserName@$mDomain"
                     uID = userID
                     //CurrentUser.getInstance().setStatus(1)
-                    //context.changeLoginStatusText("Fetching database",Color.BLUE,false)
+                    context.changeLoginStatusText("Fetching database",Color.BLUE,false)
                     //unfinished coding
                 }
             }
