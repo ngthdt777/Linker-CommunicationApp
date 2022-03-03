@@ -4,33 +4,38 @@ import android.graphics.Color
 import android.util.Log
 import com.example.linker_kotlin.UI.LoginActivity
 import org.linphone.core.*
-class LoginService {
+
+class LoginService private constructor(){
+
     private lateinit var core : Core
-    private lateinit var instance : LoginService
     private lateinit var mUserName : String
     private lateinit var mDomain : String
     private lateinit var uID : String
-
-    fun getLoginService() : LoginService { return instance }
     fun getCore() : Core { return core }
-    fun initializeCore(context : Context) { instance = LoginService(context) }
 
-    private fun LoginService(context:Context) : LoginService{
+    private object Holder { val INSTANCE = LoginService() }
+    companion object{
+        @JvmStatic
+        fun getInstance(): LoginService{
+            return Holder.INSTANCE
+        }
+    }
+
+    fun initializeCore(context : Context) {
         val factory = Factory.instance()
         factory.setDebugMode(true,"Hello Linphone")
         core = factory.createCore(null,null,context)
         core.start()
-        return LoginService()
     }
 
-    fun login (username: String, password : String){
+    public fun login (username: String, password : String){
         val domain = "sip.linphone.org"
         mUserName = username
         mDomain = domain
         val transportType = TransportType.Tcp
         val authInfo = Factory.instance().createAuthInfo(username, null, password,
                                                         null, null, domain, null)
-        val accountParams = core.createAccountParams()
+        val accountParams : AccountParams = core.createAccountParams()
         val sipAddress = "sip:$username@$domain"
         val identity = Factory.instance().createAddress(sipAddress)
         accountParams.identityAddress = identity
@@ -43,14 +48,13 @@ class LoginService {
 
         val account = core.createAccount(accountParams)
 
-        setOnAccountRegisterStateChanged()
+        //setOnAccountRegisterStateChanged()
         core.addAuthInfo(authInfo)
         core.addAccount(account)
         core.defaultAccount = account
         account.addListener { _, state, message ->
             Log.i("$state,----- $message","null")
         }
-
     }
 
     fun unregister(){

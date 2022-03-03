@@ -27,16 +27,14 @@ class LoginActivity : AppCompatActivity() {
         userNameTextView = findViewById(R.id.login_username)
         passwordTextView = findViewById(R.id.login_password)
 
-        //initialize Core
-        LoginService().initializeCore(this)
-        //LoginService().setOnAccountRegisterStateChanged()
+        LoginService.getInstance().initializeCore(this)
 
         loginBtn.setOnClickListener{
             loginBtn.isEnabled = true
             changeLoginStatusText("Login to IMS server", Color.BLUE, false)
             val username = userNameTextView.text.toString()
             val password = passwordTextView.text.toString()
-            LoginService().login(username,password)
+            LoginService.getInstance().login(username,password)
         }
 
         toRegisterView.setOnClickListener{
