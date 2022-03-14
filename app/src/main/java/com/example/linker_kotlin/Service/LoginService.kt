@@ -6,13 +6,11 @@ import com.example.linker_kotlin.UI.LoginActivity
 import org.linphone.core.*
 
 class LoginService private constructor(){
-
     private lateinit var core : Core
     private lateinit var mUserName : String
     private lateinit var mDomain : String
     private lateinit var uID : String
     fun getCore() : Core { return core }
-
     private object Holder { val INSTANCE = LoginService() }
     companion object{
         @JvmStatic
@@ -20,8 +18,7 @@ class LoginService private constructor(){
             return Holder.INSTANCE
         }
     }
-
-    fun initializeCore(context : Context) {
+    fun LoginService(context : Context) {
         val factory = Factory.instance()
         factory.setDebugMode(true,"Hello Linphone")
         core = factory.createCore(null,null,context)

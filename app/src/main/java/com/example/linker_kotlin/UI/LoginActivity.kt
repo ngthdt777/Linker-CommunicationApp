@@ -27,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
         userNameTextView = findViewById(R.id.login_username)
         passwordTextView = findViewById(R.id.login_password)
 
-        LoginService.getInstance().initializeCore(this)
+        LoginService.getInstance().LoginService(this)
         LoginService.getInstance().setOnAccountRegisterStateChanged(this)
 
         loginBtn.setOnClickListener{
