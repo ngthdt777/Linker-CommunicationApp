@@ -1,18 +1,19 @@
 package com.example.linker_kotlin.Service
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import com.example.linker_kotlin.UI.LoginActivity
+import com.example.linker_kotlin.UI.MainActivity
+import com.example.linker_kotlin.UI.RegisterActivity
 import org.linphone.core.*
 
 class LoginService private constructor(){
-
     private lateinit var core : Core
     private lateinit var mUserName : String
     private lateinit var mDomain : String
     private lateinit var uID : String
     fun getCore() : Core { return core }
-
     private object Holder { val INSTANCE = LoginService() }
     companion object{
         @JvmStatic
@@ -20,8 +21,7 @@ class LoginService private constructor(){
             return Holder.INSTANCE
         }
     }
-
-    fun initializeCore(context : Context) {
+    fun LoginService(context : Context) {
         val factory = Factory.instance()
         factory.setDebugMode(true,"Hello Linphone")
         core = factory.createCore(null,null,context)
@@ -94,6 +94,8 @@ class LoginService private constructor(){
                     //CurrentUser.getInstance().setStatus(1)
                     context.changeLoginStatusText("Fetching database",Color.BLUE,false)
                     //unfinished coding
+                    val intent = Intent(context.applicationContext, MainActivity::class.java)
+                    context.startActivity(intent)
                 }
             }
         }
