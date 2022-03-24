@@ -1,8 +1,11 @@
 package com.example.linker_kotlin.Service
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import com.example.linker_kotlin.UI.LoginActivity
+import com.example.linker_kotlin.UI.MainActivity
+import com.example.linker_kotlin.UI.RegisterActivity
 import org.linphone.core.*
 
 class LoginService private constructor(){
@@ -91,6 +94,8 @@ class LoginService private constructor(){
                     //CurrentUser.getInstance().setStatus(1)
                     context.changeLoginStatusText("Fetching database",Color.BLUE,false)
                     //unfinished coding
+                    val intent = Intent(context.applicationContext, MainActivity::class.java)
+                    context.startActivity(intent)
                 }
             }
         }
