@@ -10,8 +10,8 @@ import retrofit2.http.Query
 
 interface RetrofitPlaceHolder {
 
-    @GET("getUserbyID")
-    fun getUserById(@Query("id") id : Int) : Call<User>
+    @GET("user_linker/")
+    fun getUserById(@Query("id") id: String) : Call<User>
 
     @GET("getUsers")
     fun getAllUsers() : Call<List<User>>
@@ -47,7 +47,7 @@ interface RetrofitPlaceHolder {
     fun getStatusByUserId(@Query("id") id :String) : Call<Int>
 
     @GET("setStatusByUserId")
-    fun getStatusByUserId(@Query("id") id :String,
+    fun setStatusByUserId(@Query("id") id :String,
                           @Query("status")status : Int) : Call<Int>
 
     //@GET("getMessageById")
