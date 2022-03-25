@@ -11,11 +11,13 @@ import androidx.annotation.NonNull
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.example.linker_kotlin.Data.CurrentUser
 import org.jetbrains.annotations.NotNull
 import de.hdodenhof.circleimageview.CircleImageView
 import com.example.linker_kotlin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.selects.select
 import org.linphone.core.ChatMessage
 
@@ -32,6 +34,7 @@ public class MainActivity : FragmentActivity() {
         callBtn?.isVisible = false
 
         val myProfilePic : CircleImageView = findViewById(R.id.app_bar_pic)
+        Picasso.get().load(CurrentUser.getInstance().getUser()?.getProfilePicture()).into(myProfilePic)
         myProfilePic.setOnClickListener(){
             val intent = Intent(this,PersonalActivity::class.java)
             startActivity(intent)
@@ -50,10 +53,13 @@ public class MainActivity : FragmentActivity() {
     }
     public fun setAppBarTitle(newTitle:String) { title?.text = newTitle }
 
-    /*public fun void updateChatRoom(chatRoomID : Int){
-        val chatFragment : ChatFragment = supportFragmentManager.findFragmentById("CHAT")
-        if (chatFragment != null && chatFragment)
-    }*/
+    fun updateChatRoom(chatRoomID : Int){
+        val chat = 1
+        val chatFragment = supportFragmentManager.findFragmentById(chat) //tag CHAT
+        if (chatFragment != null && chatFragment.isVisible){
+            //chatFragment.updateChatRoom(chatRoomID)
+        }
+    }
 
     fun navListener() : NavigationBarView.OnItemReselectedListener? {
         fun setOnItemReselectedListener(@NonNull item: MenuItem) {

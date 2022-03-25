@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface RetrofitPlaceHolder {
 
-    @GET("getUserbyID")
+    @GET("user_linker/")
     fun getUserById(@Query("id") id: String) : Call<User>
 
     @GET("getUsers")

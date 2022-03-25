@@ -7,7 +7,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.linker_kotlin.R
+import com.example.linker_kotlin.Service.Database.Database
 import com.example.linker_kotlin.Service.LoginService
+import java.sql.Date
 
 class LoginActivity : AppCompatActivity() {
 

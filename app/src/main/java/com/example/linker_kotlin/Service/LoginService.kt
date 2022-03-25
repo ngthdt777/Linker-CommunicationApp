@@ -27,13 +27,14 @@ class LoginService private constructor(){
         }
     }
     fun LoginService(context : Context) {
+        Database.getInstance().Database()
         val factory = Factory.instance()
         factory.setDebugMode(true,"Hello Linphone")
         core = factory.createCore(null,null,context)
         core.start()
     }
 
-    public fun login (username: String, password : String){
+    fun login (username: String, password : String){
         val domain = "sip.linphone.org"
         mUserName = username
         mDomain = domain
@@ -104,17 +105,17 @@ class LoginService private constructor(){
                     uID = userID
                     context.changeLoginStatusText("Fetching database",Color.BLUE,false)
 
-                    Database.getInstance().getAPI()
-                        .setStatusByUserId(userID, 1)
-                        .enqueue(object : Callback<Int> {
-                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
-                                TODO("Not yet implemented")
-                            }
-
-                            override fun onFailure(call: Call<Int>, t: Throwable) {
-                                TODO("Not yet implemented")
-                            }
-                        })
+//                    Database.getInstance().getAPI()
+//                        .setStatusByUserId(userID, 1)
+//                        .enqueue(object : Callback<Int> {
+//                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
+//                                TODO("Not yet implemented")
+//                            }
+//
+//                            override fun onFailure(call: Call<Int>, t: Throwable) {
+//                                TODO("Not yet implemented")
+//                            }
+//                        })
 
                     Database.getInstance().getAPI().getUserById(userID).enqueue(object : Callback<User>{
                         override fun onResponse(call: Call<User>, response: Response<User>) {
