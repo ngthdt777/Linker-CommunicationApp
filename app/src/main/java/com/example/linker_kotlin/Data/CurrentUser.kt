@@ -6,6 +6,7 @@ import org.linphone.core.Factory
 
 class CurrentUser {
     var user : User ?= null
+    var status : Int ?= null
 
     private object Holder { val INSTANCE = CurrentUser() }
     companion object{
@@ -15,9 +16,15 @@ class CurrentUser {
         }
     }
     private fun CurrentUser() {}
+
     @JvmName("getUser1")
     fun getUser() : User? { return user}
+
     @JvmName("setUser1")
     fun setUser(user: User){ this.user = user}
+
+    fun getStatus() : Int { return status!! }
+
+    fun setStatus(status : Int) { this.status = status}
 
 }
