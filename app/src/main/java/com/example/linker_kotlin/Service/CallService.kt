@@ -1,15 +1,23 @@
 package com.example.linker_kotlin.Service
 
+import android.annotation.SuppressLint
 import android.content.Context
-import org.linphone.core.Call
-import org.linphone.core.Core
-import org.linphone.core.Factory
-import org.linphone.core.MediaEncryption
+import android.content.Intent
+import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Service.Database.Database
+import com.example.linker_kotlin.UI.CallGoing
+import com.example.linker_kotlin.UI.CallIncoming
+import com.example.linker_kotlin.UI.MainActivity
+import org.linphone.core.*
+import retrofit2.Callback
+import retrofit2.Response
 
 class CallService {
-    private lateinit var core: Core
-    private lateinit var currentContext:Context
-    private object Holder { val INSTANCE = CallService() }
+    private lateinit var core : Core
+    private lateinit var currentContext : Context
+    private object Holder { @SuppressLint("StaticFieldLeak")
+                            val INSTANCE = CallService()
+                            }
     private var isVideoCall: Boolean = false
     companion object{
         @JvmStatic
@@ -20,8 +28,9 @@ class CallService {
 
     private fun CallService(context: Context) {
         isVideoCall = false
-      //  core = LoginService.getLoginServer().getCore()
-       // core.addListener(coreListenerStub)
+        this.setCurrentContext(context)
+        core = LoginService.getInstance().getCore()
+        core.addListener(coreListenerStub)
         core.enableMic(true)
         core.enableVideoCapture(true)
         core.enableVideoDisplay(true)
@@ -41,34 +50,104 @@ class CallService {
 
     }
 
+    private val coreListenerStub = object : CoreListenerStub() {
+        override fun onCallStateChanged(
+            core: Core,
+            call: Call,
+            state: Call.State?,
+            message: String
+        ) {
+            super.onCallStateChanged(core, call, state, message)
+            when(state) {
+                Call.State.IncomingReceived -> {
+                    val intent = Intent(currentContext, CallIncoming::class.java)
+                    val remoteAddress = call.remoteAddress
+                    val id = "${remoteAddress.username}@${remoteAddress.domain}"
+                    intent.putExtra("id",id)
+                    Database.getInstance().getAPI().getUserById(id).enqueue(object : Callback<User> {
+                        override fun onResponse( call : retrofit2.Call<User>, response : Response<User>
+                        ){
+                            intent.putExtra("picURI", response.body()?.getProfilePicture())
+                            currentContext.startActivity(intent)
+                        }
+
+                        override fun onFailure(call: retrofit2.Call<User>, t: Throwable) {
+                            intent.putExtra("picURI", "")
+                            currentContext.startActivity(intent)
+                        }
+                    })
+                }
+                Call.State.OutgoingInit -> {
+                    val intent = Intent(currentContext, CallGoing::class.java)
+                    val remoteAddress = call.remoteAddress
+                    val id = "${remoteAddress.username}@${remoteAddress.domain}"
+                    intent.putExtra("id",id)
+                    intent.putExtra("receive",false)
+
+                    Database.getInstance().getAPI().getUserById(id).enqueue(object : Callback<User> {
+                        override fun onResponse( call : retrofit2.Call<User>, response : Response<User>
+                        ){
+                            intent.putExtra("picURI", response.body()?.getProfilePicture())
+                            currentContext.startActivity(intent)
+                        }
+                        override fun onFailure(call: retrofit2.Call<User>, t: Throwable) {
+                            intent.putExtra("picURI", "")
+                            currentContext.startActivity(intent)
+                        }
+                    })
+                }
+                Call.State.OutgoingProgress -> {}
+                Call.State.OutgoingRinging -> {}
+                Call.State.Connected -> {}
+                Call.State.StreamsRunning -> {
+                   (currentContext as CallGoing).startTimer()
+                    if (isVideoCall) {
+                        (currentContext as CallGoing).changeToVideoCall()
+                        isVideoCall = false
+                    }
+                }
+                Call.State.Paused -> {}
+                Call.State.PausedByRemote -> {}
+                Call.State.Updating -> {}
+                Call.State.UpdatedByRemote -> {
+                    core.currentCall?.acceptUpdate(core.currentCall?.remoteParams)
+                    if (core.currentCall?.params!!.videoEnabled()){
+                        (currentContext as CallGoing).changeLayoutToVideo()
+                    }
+                    else (currentContext as CallGoing).changeLayoutToCall()
+                }
+                Call.State.Error -> {}
+                Call.State.End -> {}
+                Call.State.Released -> {
+                    val intent = Intent(currentContext, MainActivity::class.java)
+                    currentContext.startActivity(intent)
+                }
+            }
+        }
+    }
+
     fun hangUp() {
         if (core.callsNb == 0) return
-
-        val call: Call?
-        call = if (core.currentCall != null) {
-            core.currentCall
-        } else {
+        val call: Call? = if (core.currentCall != null) { core.currentCall }
+        else {
             val listOfCalls = core.calls
             listOfCalls[0]
         }
         if (call == null) return
-
         call.terminate()
     }
 
     fun toggleVideo() {
         if (core.callsNb == 0) return
 
-        val call = (if (core.currentCall != null) core.currentCall else core.calls.clone()[0])
-            ?: return
+        val call = (if (core.currentCall != null)
+            core.currentCall
+        else core.calls.clone()[0]) ?: return
 
         val callParams = core.createCallParams(call)
-
         callParams?.enableVideo(!call.currentParams.videoEnabled())
-
         call.enableCamera(true)
         call.update(callParams)
-
     }
 
     fun toggleCamera() {
@@ -92,11 +171,7 @@ class CallService {
         }
     }
 
-    fun getCurrentContext(): Context? {
-        return currentContext
-    }
+    fun getCurrentContext(): Context { return currentContext }
 
-    fun setCurrentContext(currentContext: Context?) {
-        this.currentContext = currentContext!!
-    }
+    fun setCurrentContext(currentContext: Context?) { this.currentContext = currentContext!! }
 }
