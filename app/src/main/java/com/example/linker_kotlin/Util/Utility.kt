@@ -19,7 +19,7 @@ class Utility {
         return (screenWidthDp / columnWidthDp + 0.5).toInt()
     }
 
-    fun getScreenWidth(context: Context): Float {
+    fun getScreenWidth(context: Context) : Float {
         val displayMetrics = context.resources.displayMetrics
         return displayMetrics.widthPixels / displayMetrics.density
     }

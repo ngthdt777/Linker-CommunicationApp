@@ -3,15 +3,12 @@ package com.example.linker_kotlin.Service.Database
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface RetrofitPlaceHolder {
 
-    @GET("user_linker/")
-    fun getUserById(@Query("id") id: String) : Call<User>
+    @GET("user_linker/{id}")
+    fun getUserById(@Path("id") id: String) : Call<User>
 
     @GET("getUsers")
     fun getAllUsers() : Call<List<User>>

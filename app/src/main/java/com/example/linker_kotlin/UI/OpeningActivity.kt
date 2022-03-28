@@ -12,12 +12,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.linker_kotlin.R
+import com.example.linker_kotlin.Service.Database.Database
 
 class OpeningActivity:AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.opening_layout)
+        Database.getInstance().Database()
         val loginBtn = findViewById<Button>(R.id.login_button)
         val registerBtn = findViewById<Button>(R.id.register_button)
 
