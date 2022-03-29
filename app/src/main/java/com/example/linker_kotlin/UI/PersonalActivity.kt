@@ -6,38 +6,40 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.linker_kotlin.Data.CurrentUser
+import com.example.linker_kotlin.Data.User
 import com.example.linker_kotlin.R
+import com.example.linker_kotlin.Service.CallService
 import com.example.linker_kotlin.Service.LoginService
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
 class PersonalActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //CallService...
+        CallService.getInstance().setCurrentContext(this)
         setContentView(R.layout.activity_personnal)
         var context : Context = this
 
         setSupportActionBar(findViewById(R.id.profile_setting_toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        var profilePic :CircleImageView = findViewById(R.id.imageviewPr)
-        var sipAddress : TextView = findViewById(R.id.emailPr)
-        var name : TextView = findViewById(R.id.titlePr)
+        val profilePic :CircleImageView = findViewById(R.id.imageviewPr)
+        val sipAddress : TextView = findViewById(R.id.emailPr)
+        val name : TextView = findViewById(R.id.titlePr)
 
-        //user.getinstance
+        val user : User? = CurrentUser.getInstance().getUser()
 
-        /*Picasso.get().load(user.getProfilePicture()).into(profilePic);
-        sipAddress.setText(user.getUserId());
-        name.setText(user.getDisplayName());*/
+        Picasso.get().load(user?.getProfilePicture()).into(profilePic)
+        sipAddress.text = user?.getUserId()
+        name.text = user?.getDisplayName()
 
         val logout : TextView = findViewById(R.id.logout)
         logout.setOnClickListener {
-            //Utility.printToast
             LoginService.getInstance().unregister()
         }
         val logoutImg : ImageView = findViewById(R.id.logoutImg)
         logoutImg.setOnClickListener {
-            //Utility.printToast
             LoginService.getInstance().unregister()
         }
         val contacts : TextView = findViewById(R.id.contacts)

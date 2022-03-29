@@ -15,9 +15,12 @@ import retrofit2.Response
 class CallService {
     private lateinit var core : Core
     private lateinit var currentContext : Context
-    private object Holder { @SuppressLint("StaticFieldLeak")
-                            val INSTANCE = CallService()
-                            }
+    private object Holder {
+        @SuppressLint("StaticFieldLeak")
+        val INSTANCE = CallService()
+    }
+    fun getCore() : Core { return core }
+
     private var isVideoCall: Boolean = false
     companion object{
         @JvmStatic
@@ -168,6 +171,31 @@ class CallService {
             call.pause()
         } else if (call.state != Call.State.Resuming) {
             call.resume()
+        }
+    }
+    fun toggleSpeaker() {
+        var currentAudioDevice = core.currentCall?.outputAudioDevice
+        var speakerEnabled = false
+        if (core.currentCall != null) {
+            currentAudioDevice = core.outputAudioDevice
+        }
+        if (currentAudioDevice != null) {
+            if (currentAudioDevice.type == AudioDevice.Type.Speaker) {
+                speakerEnabled = true
+            }
+        }
+
+        for (audioDevice in core.audioDevices) {
+            if (speakerEnabled && audioDevice.type == AudioDevice.Type.Earpiece) {
+                if (core.currentCall != null) {
+                    core.currentCall!!.outputAudioDevice = audioDevice
+                }
+            } else if (!speakerEnabled && audioDevice.type == AudioDevice.Type.Speaker) {
+                if (core.currentCall != null) {
+                    core.currentCall!!.outputAudioDevice = audioDevice
+                }
+                return
+            }
         }
     }
 

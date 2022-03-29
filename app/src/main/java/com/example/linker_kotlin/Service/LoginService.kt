@@ -8,6 +8,8 @@ import com.example.linker_kotlin.Data.User
 import com.example.linker_kotlin.Service.Database.Database
 import com.example.linker_kotlin.UI.LoginActivity
 import com.example.linker_kotlin.UI.MainActivity
+import com.example.linker_kotlin.Util.Utility
+import okhttp3.internal.Util
 import org.linphone.core.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,7 +29,6 @@ class LoginService private constructor(){
         }
     }
     fun LoginService(context : Context) {
-        Database.getInstance().Database()
         val factory = Factory.instance()
         factory.setDebugMode(true,"Hello Linphone")
         core = factory.createCore(null,null,context)
@@ -116,15 +117,16 @@ class LoginService private constructor(){
 //                                TODO("Not yet implemented")
 //                            }
 //                        })
-
                     Database.getInstance().getAPI().getUserById(userID).enqueue(object : Callback<User>{
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             if (!response.isSuccessful){
-                                CurrentUser.getInstance().setStatus(0)
+                                //CurrentUser.getInstance().setStatus(0)
                             }
 
                             val user : User? = response.body()
-                            CurrentUser.getInstance().setUser(user!!)
+                            if (user != null) {
+                                CurrentUser.getInstance().setUser(user)
+                            }
                             CurrentUser.getInstance().setStatus(1)
                             val intent = Intent(context.applicationContext, MainActivity::class.java)
                             context.startActivity(intent)

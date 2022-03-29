@@ -37,7 +37,7 @@ class ChatService {
         override fun onMessageReceived(core: Core, chatRoom: ChatRoom, message: ChatMessage) {
             super.onMessageReceived(core, chatRoom, message)
             val currentContext : Context = CallService.getInstance().getCurrentContext()
-            if (currentContext is ChatActivity ){
+            /*if (currentContext is ChatActivity ){
                 val chatActivity = currentContext as ChatActivity
                 chatActivity.updateMessage()
             } else if (currentContext is MainActivity) run {
@@ -63,7 +63,7 @@ class ChatService {
                         }
                     })
                 }
-            }
+            }*/
         }
     }
 
