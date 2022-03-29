@@ -48,11 +48,6 @@ class User : Serializable {
         return splits
     }
 
-//    fun equals(o : Objects) : Boolean{
-//        if ( this == o[0] ) return  true
-//        if ( o == null || )
-//    }
-
     override fun hashCode(): Int {
         return Objects.hash(userId,displayName,profilePicture)
     }

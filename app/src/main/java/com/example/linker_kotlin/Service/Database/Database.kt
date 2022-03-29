@@ -25,8 +25,6 @@ class Database {
         retrofitPlaceHolder = retrofit.create(RetrofitPlaceHolder::class.java)
     }
 
-    //fun initializeDatabase() { Database() = Database() }
-
     private fun getRetrofitPlaceHolder() : RetrofitPlaceHolder{ return retrofitPlaceHolder }
 
     fun getDatabase() : Database { return getInstance() }

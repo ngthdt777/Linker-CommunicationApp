@@ -124,7 +124,9 @@ class LoginService private constructor(){
                             }
 
                             val user : User? = response.body()
-                            CurrentUser.getInstance().setUser(user!!)
+                            if (user != null) {
+                                CurrentUser.getInstance().setUser(user)
+                            }
                             CurrentUser.getInstance().setStatus(1)
                             val intent = Intent(context.applicationContext, MainActivity::class.java)
                             context.startActivity(intent)
