@@ -33,11 +33,11 @@ class ChatFragment : Fragment() {
             chatRoomList = ArrayList()
             view = inflater.inflate(R.layout.fragment_chat,container, false)
             view2 = inflater.inflate(R.layout.chat_fragment_item,container,false)
-            circleImageView = view2.findViewById<CircleImageView>(R.id.chat_group_profile_pic)
+            circleImageView = view2.findViewById(R.id.chat_group_profile_pic)
 
             val currentUser = CurrentUser.getInstance().getUser()
             listView = view.findViewById(R.id.chat_fragment_list_view)
-            listAdapter = ChatListAdapter(this.requireActivity(),chatRoomList)
+            listAdapter = ChatListAdapter(this.requireContext() ,chatRoomList)
             listView.adapter = listAdapter
 
             registerForContextMenu(listView)

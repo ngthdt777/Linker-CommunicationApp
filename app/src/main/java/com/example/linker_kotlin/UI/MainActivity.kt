@@ -58,7 +58,7 @@ public class MainActivity : FragmentActivity() {
     fun navListener() : NavigationBarView.OnItemReselectedListener? {
         fun setOnItemReselectedListener(@NonNull item: MenuItem) {
             var selectedFragment: Fragment? = null
-            var tag: String = "CHAT"
+            var tag = "CHAT"
             when (item.itemId) {
                 R.id.nav_chat -> {
                     tag = "CHAT"

@@ -3,6 +3,7 @@ package com.example.linker_kotlin.Data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,9 +81,11 @@ object chatRoomArrayList {
     var chatRoomArrayList : List<MyChatRoom>? = null
 }*/
 
-class ChatListAdapter(private val mContext: Context, var chatRoomArrayList: List<MyChatRoom>) :
-    ArrayAdapter<MyChatRoom?>(mContext, R.layout.chat_fragment_item, chatRoomArrayList) {
+class ChatListAdapter(var mContext: Context,var chatRoomArrayList: List<MyChatRoom>) :
+    ArrayAdapter<MyChatRoom>(mContext, R.layout.chat_fragment_item, chatRoomArrayList) {
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        Log.d("[ THIS IS THE PART WHERE I DEBUG STUFF ]", "PRINT HERE ! ! !")
         val chatRoom = getItem(position)
         var v = convertView
         if (v == null) {
@@ -128,3 +131,4 @@ class ChatListAdapter(private val mContext: Context, var chatRoomArrayList: List
         return chatRoomArrayList[pos]
     }
 }
+
