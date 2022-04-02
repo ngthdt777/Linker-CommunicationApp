@@ -105,10 +105,7 @@ class LoginService private constructor(){
                     val userID = "sip:$mUserName@$mDomain"
                     uID = userID
                     context.changeLoginStatusText("Fetching database",Color.BLUE,false)
-
-//                    Database.getInstance().getAPI()
-//                        .setStatusByUserId(userID, 1)
-//                        .enqueue(object : Callback<Int> {
+//                    Database.getInstance().getAPI().setStatusByUserId(userID, 1).enqueue(object : Callback<Int> {
 //                            override fun onResponse(call: Call<Int>, response: Response<Int>) {
 //                                TODO("Not yet implemented")
 //                            }
@@ -120,7 +117,7 @@ class LoginService private constructor(){
                     Database.getInstance().getAPI().getUserById(userID).enqueue(object : Callback<User>{
                         override fun onResponse(call: Call<User>, response: Response<User>) {
                             if (!response.isSuccessful){
-                                //CurrentUser.getInstance().setStatus(0)
+                                CurrentUser.getInstance().setStatus(0)
                             }
 
                             val user : User? = response.body()

@@ -1,13 +1,17 @@
 package com.example.linker_kotlin.Data
+import com.google.gson.annotations.SerializedName
 import org.linphone.core.ChatRoom
 
 class MyChatRoom {
     fun setId (id : Int) {this.id = id}
 
+    @SerializedName("id_cr")
     private var id : Int ?= null
 
+    @SerializedName("name_cr")
     private var name : String ?= null
 
+    @SerializedName("type_cr")
     private var type : Int ?= null
 
     private var members : List<User> ?= null
@@ -50,15 +54,23 @@ class MyChatRoom {
             return members?.get(0)
         }
         //Check if the other member is the current user or not
-//        if (members?.get(0) ){
-//            return members?.get(1)
-//        }
+        if (members!!.get(0).getUserId().equals(CurrentUser.getInstance().getUser()?.getUserId()) ){
+            return members?.get(1)
+        }
         return members?.get(0)
     }
 
-    fun getLinphoneChatRoom() : ChatRoom? {
-        for (user : User in members!!){
-            //if ()
+    fun getLinphoneChatRoom() : ChatRoom? { return linphoneChatRoom}
+
+    fun setLinphoneChatRoom(linphoneChatRoom: ChatRoom?) {
+        this.linphoneChatRoom = linphoneChatRoom
+    }
+
+    fun getMemberByID(userID: String?): User? {
+        for (user in members!!) {
+            if (user.getUserId().equals(userID)) {
+                return user
+            }
         }
         return null
     }
@@ -72,16 +84,16 @@ class MyChatRoom {
             if (twoMembers.size >= 2){
                 return twoMembers
             }
-//            if (!user.getUserId().equals(CurrentUser.getInstance().getUser().getUserId())) {
-//                twoMembers.add(user)
-//            }
+            if (!user.getUserId().equals(CurrentUser.getInstance().getUser()?.getUserId())) {
+                twoMembers.add(user)
+            }
         }
         return twoMembers
     }
 
     fun getHighLight() : Int? { return highlight }
 
-    fun setHighLight( highLight : Int ) { this.highlight = highlight}
+    fun setHighLight( highLight : Int ) { this.highlight = highLight}
 
 
 

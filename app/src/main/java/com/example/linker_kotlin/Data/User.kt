@@ -1,14 +1,18 @@
 package com.example.linker_kotlin.Data
 
+import com.google.gson.annotations.SerializedName
 import java.io.ObjectInput
 import java.io.Serializable
 import java.util.*
 
 class User : Serializable {
+    @SerializedName("id_user")
     private var userId : String ?= null
 
+    @SerializedName("name_user")
     private var displayName : String ?= null
 
+    @SerializedName("avatar_user")
     private var profilePicture : String ?= null
 
     fun User(userId : String, displayName : String){

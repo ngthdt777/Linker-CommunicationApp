@@ -2,9 +2,7 @@ package com.example.linker_kotlin.UI
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.NonNull
@@ -12,14 +10,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.linker_kotlin.Data.CurrentUser
-import org.jetbrains.annotations.NotNull
-import de.hdodenhof.circleimageview.CircleImageView
 import com.example.linker_kotlin.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.selects.select
-import org.linphone.core.ChatMessage
+import de.hdodenhof.circleimageview.CircleImageView
 
 public class MainActivity : FragmentActivity() {
     var title : TextView ?= null
@@ -47,11 +42,10 @@ public class MainActivity : FragmentActivity() {
         val bottomNav : BottomNavigationView = findViewById(R.id.main_bottom_nav)
         bottomNav.setOnItemReselectedListener(navListener())
         //CallService.setCurrentContext...
-        val chatFragment = ChatFragment()
-//        supportFragmentManager.beginTransaction().replace(R.id.fragment_container,
-//                                                   chatFragment,"CHAT").commit()
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container,ChatFragment(),"CHAT").commit()
     }
-    public fun setAppBarTitle(newTitle:String) { title?.text = newTitle }
+    fun setAppBarTitle(newTitle:String) { title?.text = newTitle }
 
     fun updateChatRoom(chatRoomID : Int){
         val chat = 1
@@ -68,8 +62,7 @@ public class MainActivity : FragmentActivity() {
             when (item.itemId) {
                 R.id.nav_chat -> {
                     tag = "CHAT"
-                    val chatFragment = ChatFragment()
-                    selectedFragment = chatFragment
+                    selectedFragment = ChatFragment()
                 }
                 R.id.nav_call -> {
                     tag = "CALL"
