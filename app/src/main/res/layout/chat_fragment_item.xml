@@ -18,18 +18,18 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/sample"
                 android:padding="5dp" />
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_group_profile_pic"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignTop="@id/profile_image"
-                android:layout_alignRight="@id/profile_image"
+                android:layout_alignEnd="@id/profile_image"
                 android:src="@drawable/round_button"
                 android:layout_marginStart="10dp"
                 android:visibility="gone"

@@ -7,14 +7,14 @@ import retrofit2.http.*
 
 interface RetrofitPlaceHolder {
 
-    @GET("user_linker/{id}")
-    fun getUserById(@Path("id") id : String) : Call<User>
+    @GET("getUserByID")
+    fun getUserById(@Query("id") id : String) : Call<User>
 
     @GET("getUsers")
     fun getAllUsers() : Call<List<User>>
 
-    @GET("getChatRoomsByUserID")
-    fun getChatRoomByUserId(@Query("userID") id: String?) : Call<List<MyChatRoom>>
+    @GET("getChatroomsByUserID")
+    fun getChatRoomByUserId(@Query("id") id: String?) : Call<List<MyChatRoom>>
 
     //@POST("addMessage")
     //fun addMessage(@Body message : Message) : Call<Int>
@@ -43,7 +43,7 @@ interface RetrofitPlaceHolder {
     @GET("getStatusByUserId")
     fun getStatusByUserId(@Query("id") id :String) : Call<Int>
 
-    @GET("setStatusByUserId")
+    @GET("setStatusByUserID")
     fun setStatusByUserId(@Query("id") id :String,
                           @Query("status")status : Int) : Call<Int>
 

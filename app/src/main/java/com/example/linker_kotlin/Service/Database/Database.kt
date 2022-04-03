@@ -20,7 +20,7 @@ class Database {
     }
     fun Database() {
         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create()
-        retrofit = Retrofit.Builder().baseUrl("http://hidden-peak-51170.herokuapp.com/api/")
+        retrofit = Retrofit.Builder().baseUrl("https://rocky-temple-48054.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create(gson)).build()
         retrofitPlaceHolder = retrofit.create(RetrofitPlaceHolder::class.java)
     }
