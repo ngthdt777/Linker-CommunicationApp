@@ -1,5 +1,6 @@
 package com.example.linker_kotlin.Service.Database
 
+import com.example.linker_kotlin.Data.Message
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
 import retrofit2.Call
@@ -47,13 +48,13 @@ interface RetrofitPlaceHolder {
     fun setStatusByUserId(@Query("id") id :String,
                           @Query("status")status : Int) : Call<Int>
 
-    //@GET("getMessageById")
-    //fun getMessageById(@Query("id") id : Int) : Call<Message>
+    @GET("getMessagesByID")
+    fun getMessagesById(@Query("id") id : Int) : Call<Message>
 
     @GET("deleteMessageById")
     fun deleteMessageById(@Query("id") id :Int) : Call<Int>
 
-    @GET("deleteChatRoomById")
+    @GET("deleteChatroomByID")
     fun deleteChatRoomById(@Query("id") id : Int) :Call<Int>
 
 

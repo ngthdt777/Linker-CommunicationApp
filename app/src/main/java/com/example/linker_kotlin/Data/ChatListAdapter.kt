@@ -17,7 +17,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 /*class ChatListAdapter : ArrayAdapter<MyChatRoom>(mContext as Context,R.layout.chat_fragment_item,
                                                 chatRoomArrayList as MutableList<MyChatRoom>){
@@ -82,7 +81,7 @@ object chatRoomArrayList {
 }*/
 
 class ChatListAdapter(var mContext: Context,var chatRoomArrayList: List<MyChatRoom>) :
-    ArrayAdapter<MyChatRoom>(mContext, R.layout.chat_fragment_item, chatRoomArrayList) {
+    android.widget.ArrayAdapter<MyChatRoom>(mContext, R.layout.chat_fragment_item, chatRoomArrayList) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         Log.d("[ THIS IS THE PART WHERE I DEBUG STUFF ]", "PRINT HERE ! ! !")

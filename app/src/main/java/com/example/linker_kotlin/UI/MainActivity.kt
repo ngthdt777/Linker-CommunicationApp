@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.linker_kotlin.Data.CurrentUser
 import com.example.linker_kotlin.R
+import com.example.linker_kotlin.Service.ChatService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.squareup.picasso.Picasso
@@ -35,7 +36,7 @@ public class MainActivity : FragmentActivity() {
             startActivity(intent)
         }
 
-        //ChatService.init...
+        ChatService.getInstance().ChatService()
         //CallService.init
         //ChatService.seton...
 
@@ -49,9 +50,9 @@ public class MainActivity : FragmentActivity() {
 
     fun updateChatRoom(chatRoomID : Int){
         val chat = 1
-        val chatFragment = supportFragmentManager.findFragmentById(chat) //tag CHAT
-        if (chatFragment != null && chatFragment.isVisible){
-            //chatFragment.updateChatRoom(chatRoomID)
+        val chatFragment = supportFragmentManager.findFragmentById(chat) as ChatFragment //tag CHAT
+        if (chatFragment.isVisible){
+            chatFragment.updateChatroom(chatRoomID)
         }
     }
 
@@ -66,8 +67,8 @@ public class MainActivity : FragmentActivity() {
                 }
                 R.id.nav_call -> {
                     tag = "CALL"
-//                    val callFragment = CallFragment()
-//                    selectedFragment = callFragment
+                    val callFragment = CallFragment()
+                    selectedFragment = callFragment
                 }
             }
             if (selectedFragment != null) {
