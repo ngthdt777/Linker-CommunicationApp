@@ -103,7 +103,7 @@ class ChatFragment : Fragment() {
         return super.onContextItemSelected(item)
     }
     override fun onResume() {
-        (activity as MainActivity?)!!.setAppBarTitle("Chat")
+        (activity as MainActivity).setAppBarTitle("Nhắn tin")
         super.onResume()
     }
 

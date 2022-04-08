@@ -3,6 +3,7 @@ package com.example.linker_kotlin.Service.Database
 import com.example.linker_kotlin.Data.Message
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Data.UserInChatModel
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -32,8 +33,8 @@ interface RetrofitPlaceHolder {
     @POST("addChatRoom")
     fun addChatRoom(@Body chatRoom : MyChatRoom) : Call<Int>
 
-    //@POST("addUserInChat")
-    //fun addUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
+    @POST("addUserInChat")
+    fun addUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
 
     @GET("addSingleChatRoom")
     fun addSingleChatRoom() : Call<Int>
