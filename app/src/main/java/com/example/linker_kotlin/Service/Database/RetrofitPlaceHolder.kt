@@ -5,7 +5,10 @@ import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
 import com.example.linker_kotlin.Data.UserInChatModel
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface RetrofitPlaceHolder {
 
@@ -26,6 +29,9 @@ interface RetrofitPlaceHolder {
 
     //@POST("addCall")
     //fun addCall(@Body call : CallModel) : Call<Int>
+
+    @GET("getMessagesByChatroomID")
+    fun getMessagesByChatroomID(@Query("chatroomID") id: Int): Call<List<Message?>?>?
 
     @GET("getSingleChatRoomByUserIds")
     fun getSingleChatRoomByUserIds(@Query("id1") id1:String, @Query("id2") id2: String): Call<Int>
