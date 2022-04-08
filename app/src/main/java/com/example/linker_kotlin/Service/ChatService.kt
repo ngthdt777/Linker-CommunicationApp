@@ -3,8 +3,9 @@ package com.example.linker_kotlin.Service
 import android.content.Context
 import android.util.Log
 import android.view.View
-import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Data.Message
 import com.example.linker_kotlin.Service.Database.Database
+import com.example.linker_kotlin.UI.ChatActivity
 import com.example.linker_kotlin.UI.MainActivity
 import org.linphone.core.*
 import retrofit2.Call
@@ -13,57 +14,68 @@ import retrofit2.Response
 
 class ChatService {
     private lateinit var core : Core
-    private val basicChatService: ChatService? = null
-    private var remoteID_ChatroomIDMap: Map<String, ChatRoom>? = null
+    //private var basicChatService = null
+    private lateinit var remoteID_ChatroomIDMap: MutableMap<String, ChatRoom>
 
-    private fun ChatService() {
+    //fun getService() : ChatService? { return basicChatService }
+
+    private object Holder { val INSTANCE = ChatService() }
+    companion object{
+        @JvmStatic
+        fun getInstance(): ChatService{
+            return Holder.INSTANCE
+        }
+    }
+
+    fun ChatService() {
         core = LoginService.getInstance().getCore()
-        LoginService.getInstance().getCore().addListener(setOnMessageReceive)
+        LoginService.getInstance().getCore().addListener(setOnMessageReceived)
         remoteID_ChatroomIDMap = HashMap()
     }
 
-    fun getChatRoom(remoteURI: String?): ChatRoom? {
-        var chatRoom = remoteID_ChatroomIDMap!![remoteURI!!]
+    fun getChatRoom(remoteURI: String): ChatRoom? {
+        var chatRoom = remoteID_ChatroomIDMap[remoteURI]
         if (chatRoom == null) {
             chatRoom = createBasicChatRoom(remoteURI)
-                //remoteID_ChatroomIDMap.put(remoteURI, chatRoom)
+            if (chatRoom != null) {
+                remoteID_ChatroomIDMap.put(remoteURI,chatRoom)
+            }
             }
         return chatRoom
     }
 
-    fun getService() : ChatService? { return basicChatService }
-
-    private val setOnMessageReceive = object : CoreListenerStub() {
+    private val setOnMessageReceived = object : CoreListenerStub() {
         override fun onMessageReceived(core: Core, chatRoom: ChatRoom, message: ChatMessage) {
             super.onMessageReceived(core, chatRoom, message)
             val currentContext : Context = CallService.getInstance().getCurrentContext()
-            /*if (currentContext is ChatActivity ){
-                val chatActivity = currentContext as ChatActivity
-                chatActivity.updateMessage()
+            if (currentContext is ChatActivity){
+                val chatActivity = currentContext
+                //chatActivity.updateMessage()
             } else if (currentContext is MainActivity) run {
-                var idString = message.getCustomHeader("MessageID")
-                var actionString = message.getCustomHeader("action");
+                val idString = message.getCustomHeader("MessageID")
+                val actionString = message.getCustomHeader("action");
 
                 if (actionString == "updateChatroomList") {
-                    currentContext.updateChatroom(-1)
+                    currentContext.updateChatRoom(-1)
                 }
                 if (idString != null){
-                    var id = idString.toInt()
-                    Database.getInstance().getAPI().getMessageById(id).enqueue(object : Callback<User> {
-                        override fun onResponse(call: Call<User>, response: Response<User>) {
-                            val mgs = response.body()
-                            if (mgs != null){
-                               val chatRoomId = mgs.getChatRoomId()
-                               var mainActivity = currentContext as MainActivity
-                               mainActivity.updateChatRoom(chatRoomId)
+                    val id = idString.toInt()
+                    Database.getInstance().getAPI().getMessagesById(id).enqueue(object : Callback<Message?> {
+                        override fun onResponse(
+                            call: Call<Message?>,
+                            response: Response<Message?>
+                        ) {
+                            val mgs: Message? = response.body()
+                            if (mgs != null) {
+                                val chatroomID: Int = mgs.getChatroomID()
+                                currentContext.updateChatRoom(chatroomID)
                             }
                         }
-                        override fun onFailure(call: Call<User>, t: Throwable) {
-                            TODO("Not yet implemented")
-                        }
+
+                        override fun onFailure(call: Call<Message?>, t: Throwable) {}
                     })
                 }
-            }*/
+            }
         }
     }
 
@@ -85,8 +97,8 @@ class ChatService {
         return null
     }
 
-    fun sendMessage(mgs: String, chatRoom: ChatRoom, id: Int, actionString: String?) {
-        var mgs = mgs
+    fun sendMessage(mgss: String, chatRoom: ChatRoom, id: Int, actionString: String?) {
+        var mgs = mgss
         val preMgs = "#####" + Integer.toString(id) + "#####"
         mgs = preMgs + mgs
         if (actionString == "updateChatroomList") {

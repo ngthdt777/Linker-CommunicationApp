@@ -37,7 +37,7 @@ class ChatFragment : Fragment() {
 
             val currentUser = CurrentUser.getInstance().getUser()
             listView = view.findViewById(R.id.chat_fragment_list_view)
-            listAdapter = ChatListAdapter(this.requireContext() ,chatRoomList)
+            listAdapter = ChatListAdapter(this.requireActivity() ,chatRoomList)
             listView.adapter = listAdapter
 
             registerForContextMenu(listView)
@@ -80,7 +80,7 @@ class ChatFragment : Fragment() {
             Log.d("FRA", "onCreateView", e);
             throw e;
         }
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return view
     }
 
     override fun onCreateContextMenu(menu: ContextMenu,v: View, menuInfo: ContextMenu.ContextMenuInfo?) {
@@ -92,13 +92,13 @@ class ChatFragment : Fragment() {
     override fun onContextItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.delete_option) {
             val info = item.menuInfo as AdapterContextMenuInfo
-            val chatRoom: MyChatRoom? = listAdapter?.getChatroomByPosition(info.position)
-//            Database.getInstance().getAPI().deleteChatroomByID(chatRoom?.getId()).enqueue(object : Callback<Int?> {
-//                override fun onResponse(call: Call<Int?>, response: Response<Int?>) {
-//                    updateChatroom(-1)
-//                }
-//                override fun onFailure(call: Call<Int?>, t: Throwable) {}
-//            })
+            val chatRoom: MyChatRoom = listAdapter.getChatroomByPosition(info.position)
+            Database.getInstance().getAPI().deleteChatRoomById(chatRoom.getId()!!).enqueue(object : Callback<Int?> {
+                override fun onResponse(call: Call<Int?>, response: Response<Int?>) {
+                    updateChatroom(-1)
+                }
+                override fun onFailure(call: Call<Int?>, t: Throwable) {}
+            })
         }
         return super.onContextItemSelected(item)
     }
@@ -107,35 +107,35 @@ class ChatFragment : Fragment() {
         super.onResume()
     }
 
-    /*fun updateChatroom(chatroomID: Int) {
-        Database.getInstance().getAPI().getChatRoomsByUserID(CurrentUser.getInstance().getUser()!!.getUserId())
+    fun updateChatroom(chatroomID: Int) {
+        Database.getInstance().getAPI()
+            .getChatRoomByUserId(CurrentUser.getInstance().getUser()!!.getUserId())
             .enqueue(object : Callback<List<MyChatRoom>?> {
                 override fun onResponse(
                     call: Call<List<MyChatRoom>?>,
                     response: Response<List<MyChatRoom>?>
                 ) {
-                    (requireActivity().application as LinkerApplication).clearChatRoom()
+                    LinkerApplication().clearChatRoom()
                     chatRoomList.clear()
                     val chatRooms = response.body()
                     if (chatRooms != null) {
                         for (chatRoom in chatRooms) {
                             if (chatRoom.getId() == chatroomID) {
-                                chatRoom.setHighlight(1)
+                                chatRoom.setHighLight(1)
                             }
                             chatRoomList.add(chatRoom)
-                            (requireActivity().application as LinkerApplication).addChatRoom(chatRoom)
+                            LinkerApplication().addChatRoom(chatRoom)
                         }
                     }
-                    chatRoomList.sortWith{ o1, o2 ->
-                        Integer.compare(o2.getHighlight(),o1.getHighlight())
+                    chatRoomList.sortWith { o1, o2 ->
+                        Integer.compare(o2.getHighLight()!!, o1.getHighLight()!!)
                     }
-                    listAdapter!!.notifyDataSetChanged()
+                    listAdapter.notifyDataSetChanged()
                 }
 
                 override fun onFailure(call: Call<List<MyChatRoom>?>, t: Throwable) {
                 }
             })
     }
-    */
 
 }
