@@ -3,30 +3,30 @@ package com.example.linker_kotlin.Data
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class Message : MessageInterface{
+class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Date?) : MessageInterface{
     @SerializedName("ID_MS")
     private var id = 0
 
     @SerializedName("Content")
-    private var content: String? = null
+    private var content = content
 
     @SerializedName("ID_User")
-    private var senderID: String? = null
+    private var senderID = senderID
 
     @SerializedName("ID_CR")
-    private var chatroomID = 0
+    private var chatroomID = chatroomID
 
     @SerializedName("Time")
-    private var createAt: Date? = null
+    private var createAt = createAt
 
-    fun Message(content: String,senderID: String ,chatroomID: Int ,createAt: Date){
-        this.content = content
-        this.senderID = senderID
-        this.chatroomID = chatroomID
-        this.createAt = createAt
-    }
+//    fun Message(){
+//        this.content = content
+//        this.senderID = senderID
+//        this.chatroomID = chatroomID
+//        this.createAt = createAt
+//    }
 
-    override fun getContent(): String? { return content }
+    override fun getContent(): String { return content }
 
     fun getChatroomID(): Int { return chatroomID }
 

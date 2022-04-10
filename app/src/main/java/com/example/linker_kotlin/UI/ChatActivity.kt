@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.linker_kotlin.Data.*
 import com.example.linker_kotlin.LinkerApplication
+import com.example.linker_kotlin.Model.CallModel
 import com.example.linker_kotlin.R
 import com.example.linker_kotlin.Service.CallService
 import com.example.linker_kotlin.Service.ChatService
 import com.example.linker_kotlin.Service.Database.Database
+import com.google.gson.annotations.SerializedName
 import org.linphone.core.ChatRoom
 import retrofit2.Call
 import retrofit2.Callback
@@ -68,22 +70,14 @@ class ChatActivity : AppCompatActivity() {
                 this,
                 messageList, CurrentUser.getInstance().getUser()!!, myChatRoom
             )
-            mMessageRecycler.setAdapter(messageListAdapter)
-            Database.getInstance().getAPI().getMessagesByChatroomID(myChatRoom.getId()!!)?.enqueue(object :
-                Callback<List<Message>> {
-                    override fun onResponse(
-                        call: Call<List<Message>>,
-                        response: Response<List<Message>>
-                    ) {
+            mMessageRecycler.adapter = messageListAdapter
+            Database.getInstance().getAPI().getMessagesByChatroomID(myChatRoom.getId()!!).enqueue(object : Callback<List<Message>> {
+                    override fun onResponse(call: Call<List<Message>>,response: Response<List<Message>>) {
                         val messages = ArrayList(response.body())
-                        Database.getInstance().getAPI().getCallHistoryByChatroomID(myChatRoom.getId())
-                            .enqueue(object : Callback<List<CallModel>?> {
-                                override fun onResponse(
-                                    call: Call<List<CallModel>?>,
-                                    response: Response<List<CallModel>?>
-                                ) {
-                                    val calls: List<CallModel>? = response.body()
-                                    messages.addAll(calls!!)
+                        Database.getInstance().getAPI().getCallHistoryByChatroomID(myChatRoom.getId()).enqueue(object : Callback<List<CallModel>> {
+                                override fun onResponse(call: Call<List<CallModel>>,response: Response<List<CallModel>>) {
+                                    val calls: List<CallModel> = response.body()!!
+                                    messages.addAll(calls)
                                     Collections.sort(messages,
                                         Comparator<Any?> { o1, o2 ->
                                             o1.getTimeSent().compareTo(o2.getTimeSent())
@@ -94,14 +88,14 @@ class ChatActivity : AppCompatActivity() {
                                 }
 
                                 override fun onFailure(
-                                    call: Call<List<CallModel>?>,
+                                    call: Call<List<CallModel>>,
                                     t: Throwable
                                 ) {
                                 }
                             })
                     }
 
-                    override fun onFailure(call: Call<List<Message?>?>, t: Throwable) {}
+                    override fun onFailure(call: Call<List<Message>>, t: Throwable) {}
                 })
             callBnt.setOnClickListener(View.OnClickListener {
                 CallService.getInstance().outgoingCall(myChatRoom.getPromientMember()?.getUserId(), false)
@@ -112,13 +106,11 @@ class ChatActivity : AppCompatActivity() {
         sendBtn = findViewById(R.id.send_btn)
         textBox = findViewById(R.id.edittext_chatbox)
         sendBtn.setOnClickListener(View.OnClickListener {
-            val mgs = textBox.getText().toString()
+            val mgs = textBox.text.toString()
             textBox.clearFocus()
             textBox.getText().clear()
-            val curr_message = Message(
-                mgs, CurrentUser.getInstance().getUser().getUserId(),
-                myChatRoom.getId(), Calendar.getInstance().time
-            )
+            val curr_message = Message(mgs, CurrentUser.getInstance().getUser()?.getUserId(),
+                                        myChatRoom.getId(), Calendar.getInstance().time )
             Database.getInstance().getAPI().addMessage(curr_message).enqueue(object : Callback<Int?> {
                 override fun onResponse(call: Call<Int?>, response: Response<Int?>) {
                     val id = response.body()!!
@@ -136,12 +128,9 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun updateMessage() {
-        Database.getInstance().getAPI().getMessagesByChatroomID(myChatRoom.getId())
-            .enqueue(object : Callback<List<Message?>?> {
-                override fun onResponse(
-                    call: Call<List<Message?>?>,
-                    response: Response<List<Message?>?>
-                ) {
+        Database.getInstance().getAPI().getMessagesByChatroomID(myChatRoom.getId()!!)
+            .enqueue(object : Callback<List<Message>> {
+                override fun onResponse(call: Call<List<Message>>,response: Response<List<Message>>) {
                     val messages= ArrayList<Any?>(response.body()!!)
                     Database.getInstance().getAPI().getCallHistoryByChatroomID(myChatRoom.getId())
                         .enqueue(object : Callback<List<CallModel>?> {
@@ -152,7 +141,7 @@ class ChatActivity : AppCompatActivity() {
                                 val calls: List<CallModel>? = response.body()
                                 messages.addAll(calls!!)
                                 Collections.sort(messages,
-                                    Comparator<Any?> { o1, o2 ->
+                                    { o1, o2 ->
                                         o1.getTimeSent().compareTo(o2.getTimeSent())
                                     })
                                 messageList.clear()
@@ -165,7 +154,7 @@ class ChatActivity : AppCompatActivity() {
                         })
                 }
 
-                override fun onFailure(call: Call<List<Message?>?>, t: Throwable) {}
+                override fun onFailure(call: Call<List<Message>>, t: Throwable) {}
             })
     }
 
@@ -201,7 +190,7 @@ class ChatActivity : AppCompatActivity() {
         // which view you pass in doesn't matter, it is only used for the window tolken
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
         val memberList = popupView.findViewById<ListView>(R.id.popup_members_list)
-        popupListAdapter = PopupListAdapter(this, myChatRoom.getMembers())
+        popupListAdapter = PopupListAdapter(this, (myChatRoom.getMembers() as List<User>))
         memberList.adapter = popupListAdapter
         popupListAdapter.notifyDataSetChanged()
         val editMembersButton = popupView.findViewById<Button>(R.id.popup_edit_members_button)
@@ -215,7 +204,7 @@ class ChatActivity : AppCompatActivity() {
             val memberList = myChatRoom.getMembers()
             i.putExtra("id", myChatRoom.getId())
             i.putExtra("chatroomName", myChatRoom.getName())
-            i.putExtra("MemberList", memberList as Serializable)
+            i.putExtra("MemberList", memberList as java.io.Serializable )
             startActivity(i)
         }
     }

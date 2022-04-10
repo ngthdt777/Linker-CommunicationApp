@@ -4,6 +4,7 @@ import com.example.linker_kotlin.Data.Message
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
 import com.example.linker_kotlin.Data.UserInChatModel
+import com.example.linker_kotlin.Model.CallModel
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -21,17 +22,17 @@ interface RetrofitPlaceHolder {
     @GET("getChatroomsByUserID")
     fun getChatRoomByUserId(@Query("id") id: String?) : Call<List<MyChatRoom>>
 
-    //@POST("addMessage")
-    //fun addMessage(@Body message : Message) : Call<Int>
+    @POST("addMessage")
+    fun addMessage(@Body message : Message) : Call<Int>
 
-    //@GET("getCallHistoryByChatRoomId")
-    //fun getCallHistoryByChatRoomId(@Query("id") id : Int) : Call<List<CallModel>>
+    @GET("getCallHistoryByChatRoomId")
+    fun getCallHistoryByChatRoomID(@Query("id") id : Int) : Call<List<CallModel>>
 
-    //@POST("addCall")
-    //fun addCall(@Body call : CallModel) : Call<Int>
+    @POST("addCall")
+    fun addCall(@Body call : CallModel) : Call<Int>
 
     @GET("getMessagesByChatroomID")
-    fun getMessagesByChatroomID(@Query("chatroomID") id: Int): Call<List<Message?>?>?
+    fun getMessagesByChatroomID(@Query("chatroomID") id: Int): Call<List<Message>>
 
     @GET("getSingleChatRoomByUserIds")
     fun getSingleChatRoomByUserIds(@Query("id1") id1:String, @Query("id2") id2: String): Call<Int>
@@ -45,8 +46,8 @@ interface RetrofitPlaceHolder {
     @GET("addSingleChatRoom")
     fun addSingleChatRoom() : Call<Int>
 
-    //@POST("deleteUserInChat")
-    //fun deleteUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
+    @POST("deleteUserInChat")
+    fun deleteUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
 
     @GET("getStatusByUserId")
     fun getStatusByUserId(@Query("id") id :String) : Call<Int>
