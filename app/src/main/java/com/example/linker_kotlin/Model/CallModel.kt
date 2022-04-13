@@ -5,22 +5,22 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class CallModel : MessageInterface {
-    @SerializedName("ID_Call")
+    @SerializedName("id_call")
     private var callID: Int = 0
 
-    @SerializedName("Type")
+    @SerializedName("type")
     private var type = 0
 
-    @SerializedName("FromUser")
+    @SerializedName("fromuser")
     private var callerID: String? = null
 
-    @SerializedName("Time")
+    @SerializedName("time")
     private var time: Date? = null
 
-    @SerializedName("ID_CR")
+    @SerializedName("id_cr")
     private var chatroomID = 0
 
-    @SerializedName("Duration")
+    @SerializedName("duration")
     private var duration = 0
 
     fun CallModel(type: Int, callerID: String?, time: Date?, chatroomID: Int, duration: Int) {

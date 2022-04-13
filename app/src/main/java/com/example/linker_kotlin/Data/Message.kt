@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Date?) : MessageInterface{
-    @SerializedName("ID_MS")
+    @SerializedName("id_ms")
     private var id = 0
 
-    @SerializedName("Content")
+    @SerializedName("content")
     private var content = content
 
-    @SerializedName("ID_User")
+    @SerializedName("id_user")
     private var senderID = senderID
 
-    @SerializedName("ID_CR")
+    @SerializedName("id_cr")
     private var chatroomID = chatroomID
 
-    @SerializedName("Time")
+    @SerializedName("time")
     private var createAt = createAt
 
 //    fun Message(){
@@ -28,7 +28,7 @@ class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Dat
 
     override fun getContent(): String { return content }
 
-    fun getChatroomID(): Int { return chatroomID }
+    fun getChatroomID(): Int? { return chatroomID }
 
     fun setChatroomID(chatroomID: Int) { this.chatroomID = chatroomID }
 

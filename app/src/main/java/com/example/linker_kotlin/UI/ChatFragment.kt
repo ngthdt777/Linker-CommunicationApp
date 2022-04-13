@@ -44,13 +44,12 @@ class ChatFragment : Fragment() {
 
             Database.getInstance().getAPI().getChatRoomByUserId(currentUser?.getUserId()).enqueue(object : Callback<List<MyChatRoom>> {
                     override fun onResponse(call: Call<List<MyChatRoom>>,response: Response<List<MyChatRoom>>) {
-                        //(requireActivity() as LinkerApplication).clearChatRoom()
-                        LinkerApplication().clearChatRoom()
+                        (requireActivity().application as LinkerApplication).clearChatRoom()
                         val chatRooms : List<MyChatRoom>? = response.body()
                         if (chatRooms != null) {
                             for (chatRoom in chatRooms){
                                 chatRoomList.add(chatRoom)
-                                LinkerApplication().addChatRoom(chatRoom)
+                                (requireActivity().application as LinkerApplication).addChatRoom(chatRoom)
                             }
                         }
                         listAdapter.notifyDataSetChanged()
@@ -64,9 +63,9 @@ class ChatFragment : Fragment() {
             listView.onItemClickListener =
                 OnItemClickListener { parent, view, position, id ->
                     val clickedChatroom: MyChatRoom = chatRoomList.get(position)
-                    val i = Intent(activity, ChatActivity::class.java)
+                    val i = Intent(this.context, ChatActivity::class.java)
                     i.putExtra("id", clickedChatroom.getId())
-                    i.putExtra("displayName", clickedChatroom.getPromientMember()?.getDisplayName())
+                    i.putExtra("displayName", clickedChatroom.getProminentMember()?.getDisplayName())
                     startActivity(i)
                 }
 
@@ -115,7 +114,7 @@ class ChatFragment : Fragment() {
                     call: Call<List<MyChatRoom>?>,
                     response: Response<List<MyChatRoom>?>
                 ) {
-                    LinkerApplication().clearChatRoom()
+                    (requireActivity().application as LinkerApplication).clearChatRoom()
                     chatRoomList.clear()
                     val chatRooms = response.body()
                     if (chatRooms != null) {
@@ -124,7 +123,7 @@ class ChatFragment : Fragment() {
                                 chatRoom.setHighLight(1)
                             }
                             chatRoomList.add(chatRoom)
-                            LinkerApplication().addChatRoom(chatRoom)
+                            (requireActivity().application as LinkerApplication).addChatRoom(chatRoom)
                         }
                     }
                     chatRoomList.sortWith { o1, o2 ->

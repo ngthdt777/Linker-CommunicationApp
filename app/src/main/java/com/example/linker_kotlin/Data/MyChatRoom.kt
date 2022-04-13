@@ -49,12 +49,12 @@ class MyChatRoom {
 
     fun getMembers(): List<User?>? { return members }
 
-    fun getPromientMember() : User? {
+    fun getProminentMember() : User? {
         if (members?.size!! <= 1){
             return members?.get(0)
         }
         //Check if the other member is the current user or not
-        if (members!!.get(0).getUserId().equals(CurrentUser.getInstance().getUser()?.getUserId()) ){
+        if (members!![0].getUserId().equals(CurrentUser.getInstance().getUser()?.getUserId()) ){
             return members?.get(1)
         }
         return members?.get(0)

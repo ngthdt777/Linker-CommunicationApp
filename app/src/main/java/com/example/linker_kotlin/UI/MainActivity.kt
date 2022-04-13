@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.linker_kotlin.Data.CurrentUser
+import com.example.linker_kotlin.LinkerApplication
 import com.example.linker_kotlin.R
 import com.example.linker_kotlin.Service.CallService
 import com.example.linker_kotlin.Service.ChatService

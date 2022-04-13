@@ -3,11 +3,9 @@ package com.example.linker_kotlin.Data
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import com.example.linker_kotlin.R
@@ -28,7 +26,7 @@ class ChatListAdapter(var mContext: Context,var chatRoomArrayList: List<MyChatRo
             v = LayoutInflater.from(mContext).inflate(R.layout.chat_fragment_item, null)
         }
         if (chatRoom != null) {
-            val prominentMember: User? = chatRoom.getPromientMember()
+            val prominentMember: User? = chatRoom.getProminentMember()
             val profileImage: CircleImageView = v!!.findViewById(R.id.profile_image)
             val profileGroupImage: CircleImageView = v.findViewById(R.id.chat_group_profile_pic)
             val username = v.findViewById<TextView>(R.id.contact_name)
@@ -50,9 +48,9 @@ class ChatListAdapter(var mContext: Context,var chatRoomArrayList: List<MyChatRo
                 Picasso.get().load(members[1].getProfilePicture()).into(profileGroupImage)
             } else {
                 profileGroupImage.visibility = View.INVISIBLE
-                Picasso.get().load(chatRoom.getPromientMember()?.getProfilePicture())
+                Picasso.get().load(chatRoom.getProminentMember()?.getProfilePicture())
                     .into(profileImage)
-                username.text = chatRoom.getPromientMember()?.getDisplayName()
+                username.text = chatRoom.getProminentMember()?.getDisplayName()
             }
             if (chatRoom.getHighLight() == 1) {
                 username.setTypeface(null, Typeface.BOLD)

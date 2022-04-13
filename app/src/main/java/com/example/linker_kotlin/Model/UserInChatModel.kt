@@ -3,8 +3,8 @@ package com.example.linker_kotlin.Model
 import com.google.gson.annotations.SerializedName
 
 class UserInChatModel(
-    @SerializedName("ID_CR")
+    @SerializedName("id_cr")
     val chatroomID: Int,
-    @SerializedName("ID_User")
+    @SerializedName("id_user")
     val userID: String
 )
