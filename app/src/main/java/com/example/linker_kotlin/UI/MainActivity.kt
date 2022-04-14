@@ -10,7 +10,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.example.linker_kotlin.Data.CurrentUser
+import com.example.linker_kotlin.LinkerApplication
 import com.example.linker_kotlin.R
+import com.example.linker_kotlin.Service.CallService
 import com.example.linker_kotlin.Service.ChatService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -37,14 +39,12 @@ public class MainActivity : FragmentActivity() {
         }
 
         ChatService.getInstance().ChatService()
-        //CallService.init
-        //ChatService.seton...
+        CallService.getInstance().CallService(this)
 
         val bottomNav : BottomNavigationView = findViewById(R.id.main_bottom_nav)
-        bottomNav.setOnItemReselectedListener(navListener())
-        //CallService.setCurrentContext...
-
+        bottomNav.setOnItemSelectedListener(navListener)
         supportFragmentManager.beginTransaction().replace(R.id.fragment_container,ChatFragment(),"CHAT").commit()
+
     }
     fun setAppBarTitle(newTitle:String) { title?.text = newTitle }
 
@@ -55,30 +55,19 @@ public class MainActivity : FragmentActivity() {
             chatFragment.updateChatroom(chatRoomID)
         }
     }
-
-    fun navListener() : NavigationBarView.OnItemReselectedListener? {
-        fun setOnItemReselectedListener(@NonNull item: MenuItem) {
+    val navListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
             var selectedFragment: Fragment? = null
             var tag = "CHAT"
             when (item.itemId) {
-                R.id.nav_chat -> {
-                    tag = "CHAT"
-                    selectedFragment = ChatFragment()
-                }
+                R.id.nav_chat -> selectedFragment = ChatFragment()
                 R.id.nav_call -> {
                     tag = "CALL"
-                    val callFragment = CallFragment()
-                    selectedFragment = callFragment
+                    selectedFragment = CallFragment()
                 }
             }
-            if (selectedFragment != null) {
-                supportFragmentManager.beginTransaction().replace(
-                    R.id.fragment_container,
-                    selectedFragment,
-                    tag
-                ).commit()
-            }
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container,selectedFragment!!, tag).commit()
+            return@OnNavigationItemSelectedListener true
         }
-        return null
-    }
+
 }

@@ -3,8 +3,13 @@ package com.example.linker_kotlin.Service.Database
 import com.example.linker_kotlin.Data.Message
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Data.UserInChatModel
+import com.example.linker_kotlin.Model.CallModel
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface RetrofitPlaceHolder {
 
@@ -14,34 +19,37 @@ interface RetrofitPlaceHolder {
     @GET("getUsers")
     fun getAllUsers() : Call<List<User>>
 
-    @GET("getChatroomsByUserID")
+    @GET("getChatRoomsByUserID")
     fun getChatRoomByUserId(@Query("id") id: String?) : Call<List<MyChatRoom>>
 
-    //@POST("addMessage")
-    //fun addMessage(@Body message : Message) : Call<Int>
+    @POST("addMessage")
+    fun addMessage(@Body message : Message) : Call<Int>
 
-    //@GET("getCallHistoryByChatRoomId")
-    //fun getCallHistoryByChatRoomId(@Query("id") id : Int) : Call<List<CallModel>>
+    @GET("getCallHistoryByChatroomID")
+    fun getCallHistoryByChatRoomID(@Query("chatroomID") id : Int) : Call<List<CallModel>>
 
-    //@POST("addCall")
-    //fun addCall(@Body call : CallModel) : Call<Int>
+    @POST("addCall")
+    fun addCall(@Body call : CallModel) : Call<Int>
 
-    @GET("getSingleChatRoomByUserIds")
+    @GET("getMessagesByChatroomID")
+    fun getMessagesByChatroomID(@Query("chatroomID") id: Int): Call<List<Message>>
+
+    @GET("getSingleChatroomByUserIDs")
     fun getSingleChatRoomByUserIds(@Query("id1") id1:String, @Query("id2") id2: String): Call<Int>
 
     @POST("addChatRoom")
     fun addChatRoom(@Body chatRoom : MyChatRoom) : Call<Int>
 
-    //@POST("addUserInChat")
-    //fun addUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
+    @POST("addUserInChat")
+    fun addUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
 
-    @GET("addSingleChatRoom")
+    @GET("addSingleChatroom")
     fun addSingleChatRoom() : Call<Int>
 
-    //@POST("deleteUserInChat")
-    //fun deleteUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
+    @POST("deleteUserInChat")
+    fun deleteUserInChat(@Body userInChatModel : UserInChatModel) : Call<Int>
 
-    @GET("getStatusByUserId")
+    @GET("getStatusByUserID")
     fun getStatusByUserId(@Query("id") id :String) : Call<Int>
 
     @GET("setStatusByUserID")
@@ -51,8 +59,9 @@ interface RetrofitPlaceHolder {
     @GET("getMessagesByID")
     fun getMessagesById(@Query("id") id : Int) : Call<Message>
 
-    @GET("deleteMessageById")
+    @GET("deleteMessagesByID")
     fun deleteMessageById(@Query("id") id :Int) : Call<Int>
+
 
     @GET("deleteChatroomByID")
     fun deleteChatRoomById(@Query("id") id : Int) :Call<Int>

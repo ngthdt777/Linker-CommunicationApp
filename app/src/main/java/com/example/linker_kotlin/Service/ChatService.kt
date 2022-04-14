@@ -67,8 +67,8 @@ class ChatService {
                         ) {
                             val mgs: Message? = response.body()
                             if (mgs != null) {
-                                val chatroomID: Int = mgs.getChatroomID()
-                                currentContext.updateChatRoom(chatroomID)
+                                val chatroomID: Int? = mgs.getChatroomID()
+                                currentContext.updateChatRoom(chatroomID!!)
                             }
                         }
 
@@ -85,9 +85,7 @@ class ChatService {
         params.enableEncryption(false)
         params.enableGroup(false)
         if (params.isValid) {
-            val remoteAddress = Factory.instance().createAddress(
-                remoteSipUri!!
-            )
+            val remoteAddress : Address? = Factory.instance().createAddress(remoteSipUri!!)
             if (remoteAddress != null) {
                 val localAddress =
                     core.defaultAccount!!.params.identityAddress

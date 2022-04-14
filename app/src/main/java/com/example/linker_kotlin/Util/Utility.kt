@@ -5,6 +5,8 @@ import android.content.Context
 import android.widget.Toast
 import com.example.linker_kotlin.Data.CurrentUser
 import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Service.ChatService
+import org.linphone.core.ChatRoom
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,7 +30,7 @@ class Utility {
         return Calendar.getInstance().time
     }
 
-    fun printToast(context: Context?, mgs: String?) {
+    fun printToast(context: Context, mgs: String) {
         Toast.makeText(context, mgs, Toast.LENGTH_LONG).show()
     }
 
@@ -44,13 +46,12 @@ class Utility {
         return userID != CurrentUser.getInstance().getUser()?.getUserId()
     }
 
-    /*fun sendUpdateMember(users: List<User?>) {
+    fun sendUpdateMember(users: List<User?>) {
         for (user in users) {
-            val room: ChatRoom = ChatService.getService().getChatroom(user.getUserId())
-            ChatService.getService()
-                .sendMessage("*#Refresh_chatroomList#*!!", room, 0, "updateChatroomList")
+            val room = ChatService.getInstance().getChatRoom(user?.getUserId()!!)
+            ChatService.getInstance().sendMessage("*#Refresh_chatroomList#*!!", room!!, 0, "updateChatroomList")
         }
-    }*/
+    }
 
     fun usersInAbutNotInB(a: List<User>, b: List<User?>): List<User> {
         val result: MutableList<User> = ArrayList()

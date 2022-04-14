@@ -29,7 +29,7 @@ class CallService {
         }
     }
 
-    private fun CallService(context: Context) {
+    fun CallService(context: Context) {
         isVideoCall = false
         this.setCurrentContext(context)
         core = LoginService.getInstance().getCore()

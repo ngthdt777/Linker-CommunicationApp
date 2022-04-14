@@ -1,14 +1,17 @@
 package com.example.linker_kotlin
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.example.linker_kotlin.Data.MyChatRoom
 import com.example.linker_kotlin.Data.User
+import com.example.linker_kotlin.Service.ChatService
 import org.linphone.core.ChatRoom
 
 class LinkerApplication : Application() {
     private val currentChatRooms = ArrayList<MyChatRoom>()
     private var context : Context ?= null
+
     override fun onCreate() {
         super.onCreate()
         this.context = applicationContext

@@ -3,32 +3,32 @@ package com.example.linker_kotlin.Data
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-class Message : MessageInterface{
-    @SerializedName("ID_MS")
-    private var id = 0
+class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Date?) : MessageInterface{
+    @SerializedName("id_ms")
+    private var id : Int? = null
 
-    @SerializedName("Content")
-    private var content: String? = null
+    @SerializedName("content")
+    private var content = content
 
-    @SerializedName("ID_User")
-    private var senderID: String? = null
+    @SerializedName("id_user")
+    private var senderID = senderID
 
-    @SerializedName("ID_CR")
-    private var chatroomID = 0
+    @SerializedName("id_cr")
+    private var chatroomID = chatroomID
 
-    @SerializedName("Time")
-    private var createAt: Date? = null
+    @SerializedName("time")
+    private var createAt = createAt
 
-    fun Message(content: String,senderID: String ,chatroomID: Int ,createAt: Date){
-        this.content = content
-        this.senderID = senderID
-        this.chatroomID = chatroomID
-        this.createAt = createAt
-    }
+//    fun Message(){
+//        this.content = content
+//        this.senderID = senderID
+//        this.chatroomID = chatroomID
+//        this.createAt = createAt
+//    }
 
-    override fun getContent(): String? { return content }
+    override fun getContent(): String { return content }
 
-    fun getChatroomID(): Int { return chatroomID }
+    fun getChatroomID(): Int? { return chatroomID }
 
     fun setChatroomID(chatroomID: Int) { this.chatroomID = chatroomID }
 
@@ -40,7 +40,7 @@ class Message : MessageInterface{
 
     fun setSenderID(senderID: String?) { this.senderID = senderID }
 
-    override fun getId(): Int { return id }
+    override fun getId(): Int { return id!! }
 
     override fun getMessageType(): Int { return 0 }
 

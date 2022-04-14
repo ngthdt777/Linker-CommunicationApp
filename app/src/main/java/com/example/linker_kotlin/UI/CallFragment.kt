@@ -24,32 +24,27 @@ class CallFragment : Fragment() {
 
     lateinit var listAdapter: CallListAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
         val view: View
         try {
             view = inflater.inflate(R.layout.fragment_call, container, false)
-            val userArrayList: ArrayList<User> = ArrayList<User>()
-            listAdapter = CallListAdapter(activity, userArrayList)
+            val userArrayList = ArrayList<User>()
+            listAdapter = CallListAdapter(requireActivity(), userArrayList)
             val listView = view.findViewById<ListView>(R.id.call_list_view)
             listView.adapter = listAdapter
-            Database.getInstance().getAPI().getAllUsers().enqueue(object : Callback<List<User?>> {
-                override fun onResponse(call: Call<List<User?>>, response: Response<List<User?>>) {
+            Database.getInstance().getAPI().getAllUsers().enqueue(object : Callback<List<User>> {
+                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                     userArrayList.clear()
-                    for (user in response.body()) {
+                    for (user in response.body()!!) {
                         if (!user.getUserId()
-                                .equals(CurrentUser.getInstance().getUser().getUserId())
+                                .equals(CurrentUser.getInstance().getUser()?.getUserId())
                         ) {
                             userArrayList.add(user)
                         }
                     }
                     listAdapter.notifyDataSetChanged()
                 }
-
-                override fun onFailure(call: Call<List<User?>>, t: Throwable) {}
+                override fun onFailure(call: Call<List<User>>, t: Throwable) {}
             })
             val floatingActionButton: FloatingActionButton = view.findViewById(R.id.fab_add_friend)
             floatingActionButton.setOnClickListener {
@@ -62,8 +57,8 @@ class CallFragment : Fragment() {
         }
         return view
     }
-    fun onResume() {
-        (activity as MainActivity).setAppBarTitle("Call")
+    override fun onResume() {
+        (activity as MainActivity).setAppBarTitle("Gọi Điện")
         super.onResume()
     }
 }
