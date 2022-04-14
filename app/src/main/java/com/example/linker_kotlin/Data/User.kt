@@ -5,7 +5,7 @@ import java.io.ObjectInput
 import java.io.Serializable
 import java.util.*
 
-class User : Serializable {
+open class User : Serializable {
     @SerializedName("id_user")
     private var userId : String ?= null
 
