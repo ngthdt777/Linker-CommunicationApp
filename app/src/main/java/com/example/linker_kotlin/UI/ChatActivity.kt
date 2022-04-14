@@ -1,5 +1,6 @@
 package com.example.linker_kotlin.UI
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
@@ -77,22 +78,15 @@ class ChatActivity : AppCompatActivity() {
                                     val calls: List<CallModel> = response.body()!!
                                     messages.addAll(calls)
                                     Collections.sort(messages,
-                                        Comparator<MessageInterface>(){ o1, o2 ->
-                                            o1.getTimeSent()!!.compareTo(o2.getTimeSent())
-                                        })
+                                                    Comparator<MessageInterface>(){ o1, o2 -> o1.getTimeSent()!!.compareTo(o2.getTimeSent())
+                                                    })
                                     messageList.addAll(messages)
                                     messageListAdapter.notifyDataSetChanged()
                                     recyclerLayoutManager.scrollToPosition(messageListAdapter.itemCount - 1)
                                 }
-
-                                override fun onFailure(
-                                    call: Call<List<CallModel>>,
-                                    t: Throwable
-                                ) {
-                                }
+                                override fun onFailure(call: Call<List<CallModel>>,t: Throwable) {}
                             })
                     }
-
                     override fun onFailure(call: Call<List<Message>>, t: Throwable) {}
                 })
             callBnt.setOnClickListener(View.OnClickListener {
@@ -106,7 +100,7 @@ class ChatActivity : AppCompatActivity() {
         sendBtn.setOnClickListener(View.OnClickListener {
             val mgs = textBox.text.toString()
             textBox.clearFocus()
-            textBox.getText().clear()
+            textBox.text.clear()
             val curr_message = Message(mgs, CurrentUser.getInstance().getUser()?.getUserId(),
                                         myChatRoom?.getId(), Calendar.getInstance().time )
             Database.getInstance().getAPI().addMessage(curr_message).enqueue(object : Callback<Int?> {
@@ -114,13 +108,13 @@ class ChatActivity : AppCompatActivity() {
                     val id = response.body()!!
                     sendMessage(mgs, myChatRoom, id)
                     curr_message.setId(id)
-                    //                        messageList.add(curr_message);
-                    //                        messageListAdapter.notifyDataSetChanged();
+                    //messageList.add(curr_message);
+                    //messageListAdapter.notifyDataSetChanged();
                     updateMessage()
                 }
-
                 override fun onFailure(call: Call<Int?>, t: Throwable) {}
             })
+            updateMessage()
         })
         memberInfoBtn.setOnClickListener(View.OnClickListener { onButtonShowPopupWindowClick(sendBtn) })
     }
@@ -132,13 +126,14 @@ class ChatActivity : AppCompatActivity() {
                     val messages= ArrayList<MessageInterface>(response.body() as List<MessageInterface>)
                     Database.getInstance().getAPI().getCallHistoryByChatRoomID(myChatRoom?.getId()!!)
                         .enqueue(object : Callback<List<CallModel>> {
-                            override fun onResponse(call: Call<List<CallModel>>,response: Response<List<CallModel>>) {
+                            override fun onResponse(call: Call<List<CallModel>>, response: Response<List<CallModel>>) {
                                 val calls: List<CallModel> = response.body()!!
                                 messages.addAll(calls)
                                 Collections.sort(messages,
-                                    Comparator<MessageInterface>(){ o1, o2 ->
-                                        o1.getTimeSent()!!.compareTo(o2.getTimeSent())
-                                    })
+                                                Comparator<MessageInterface>(){ o1, o2 ->
+                                                    o1.getTimeSent()!!.compareTo(o2.getTimeSent())
+                                                 })
+                                messageList.clear()
                                 messageList.addAll(messages)
                                 messageListAdapter.notifyDataSetChanged()
                                 recyclerLayoutManager.scrollToPosition(messageListAdapter.itemCount - 1)

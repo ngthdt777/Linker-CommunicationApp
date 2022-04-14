@@ -5,7 +5,7 @@ import java.util.*
 
 class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Date?) : MessageInterface{
     @SerializedName("id_ms")
-    private var id = 0
+    private var id : Int? = null
 
     @SerializedName("content")
     private var content = content
@@ -40,7 +40,7 @@ class Message(content: String,senderID: String? ,chatroomID: Int? ,createAt: Dat
 
     fun setSenderID(senderID: String?) { this.senderID = senderID }
 
-    override fun getId(): Int { return id }
+    override fun getId(): Int { return id!! }
 
     override fun getMessageType(): Int { return 0 }
 

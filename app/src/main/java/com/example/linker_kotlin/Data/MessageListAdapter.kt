@@ -88,10 +88,10 @@ class MessageListAdapter(
 
     private inner class ReceivedMessageHolder constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
-        var messageText: TextView
-        var timeText: TextView
-        var nameText: TextView
-        var profileImage: ImageView
+        var messageText: TextView = itemView.findViewById(R.id.text_message_body)
+        var timeText: TextView = itemView.findViewById(R.id.text_message_time)
+        var nameText: TextView = itemView.findViewById(R.id.text_message_name)
+        var profileImage: ImageView = itemView.findViewById(R.id.image_message_profile)
         fun bind(message: MessageInterface) {
             val type = message.getMessageType()
             messageText.text = message.getContent()
@@ -119,18 +119,12 @@ class MessageListAdapter(
             }
         }
 
-        init {
-            messageText = itemView.findViewById(R.id.text_message_body)
-            timeText = itemView.findViewById(R.id.text_message_time)
-            nameText = itemView.findViewById(R.id.text_message_name)
-            profileImage = itemView.findViewById(R.id.image_message_profile)
-        }
     }
 
     private inner class SentMessageHolder constructor(itemView: View) :
         RecyclerView.ViewHolder(itemView), OnCreateContextMenuListener {
-        var messageText: TextView
-        var timeText: TextView
+        var messageText: TextView = itemView.findViewById(R.id.text_message_body)
+        var timeText: TextView = itemView.findViewById(R.id.text_message_time)
         fun bind(message: MessageInterface) {
             val type = message.getMessageType()
             messageText.text = message.getContent()
@@ -145,10 +139,6 @@ class MessageListAdapter(
             menu.add(this.adapterPosition, 10, 0, "Delete")
         }
 
-        init {
-            messageText = itemView.findViewById(R.id.text_message_body)
-            timeText = itemView.findViewById(R.id.text_message_time)
-        }
     }
 
     fun getMessageByPosition(pos: Int): MessageInterface {
