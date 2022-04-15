@@ -27,7 +27,7 @@ class AddFriendActivity : AppCompatActivity() {
         setContentView(R.layout.fragment_people)
         setSupportActionBar(findViewById(R.id.add_friend_activity_toolbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        searchingContacts = ArrayList<User>()
+        searchingContacts = ArrayList()
         searchText = findViewById(R.id.search_people_bar)
         searchText.isEnabled = false
         contactRecyclerView = findViewById(R.id.add_friend_recyclerView)
@@ -45,7 +45,6 @@ class AddFriendActivity : AppCompatActivity() {
                 searchText.isEnabled = true
                 adapter.notifyDataSetChanged()
             }
-
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
                 searchText.isEnabled = true
             }
@@ -55,15 +54,14 @@ class AddFriendActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 adapter.filter.filter(s)
             }
-
             override fun afterTextChanged(s: Editable) {}
         })
     }
 
     fun removeContact(id: String?) {
-        searchingContacts.removeIf({ e: User ->
+        searchingContacts.removeIf { e: User ->
             e.getUserId().equals(id)
-        })
+        }
         adapter.notifyDataSetChanged()
     }
 }

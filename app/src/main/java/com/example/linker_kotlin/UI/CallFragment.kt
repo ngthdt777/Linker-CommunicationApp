@@ -24,8 +24,8 @@ class CallFragment : Fragment() {
 
     lateinit var listAdapter: CallListAdapter
 
-    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View {
-        val view: View
+    override fun onCreateView(inflater: LayoutInflater,container: ViewGroup?,savedInstanceState: Bundle?): View? {
+        lateinit var view: View
         try {
             view = inflater.inflate(R.layout.fragment_call, container, false)
             val userArrayList = ArrayList<User>()
@@ -36,9 +36,7 @@ class CallFragment : Fragment() {
                 override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                     userArrayList.clear()
                     for (user in response.body()!!) {
-                        if (!user.getUserId()
-                                .equals(CurrentUser.getInstance().getUser()?.getUserId())
-                        ) {
+                        if (!user.getUserId().equals(CurrentUser.getInstance().getUser()?.getUserId())) {
                             userArrayList.add(user)
                         }
                     }
@@ -46,9 +44,9 @@ class CallFragment : Fragment() {
                 }
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {}
             })
-            val floatingActionButton: FloatingActionButton = view.findViewById(R.id.fab_add_friend)
+            val floatingActionButton = view.findViewById<FloatingActionButton>(R.id.fab_add_friend)
             floatingActionButton.setOnClickListener {
-                val i = Intent(getActivity(), AddFriendActivity::class.java)
+                val i = Intent(activity, AddFriendActivity::class.java)
                 startActivity(i)
             }
         } catch (e: Exception) {

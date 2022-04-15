@@ -2,28 +2,25 @@ package com.example.linker_kotlin.Data
 import com.google.gson.annotations.SerializedName
 import org.linphone.core.ChatRoom
 
-class MyChatRoom {
+class MyChatRoom(name: String, type: Int, members: List<User>) {
     fun setId (id : Int) {this.id = id}
 
     @SerializedName("id_cr")
     private var id : Int ?= null
 
     @SerializedName("name_cr")
-    private var name : String ?= null
+    private var name : String ?= name
 
     @SerializedName("type_cr")
-    private var type : Int ?= null
+    private var type : Int ?= type
 
-    private var members : List<User> ?= null
+    private var members : List<User> ?= members
 
     private var highlight : Int ?= null
 
     private var linphoneChatRoom : ChatRoom ?= null
 
-    fun MyChatRoom(name : String, type : Int, members : List<User>){
-        this.name = name
-        this.type = type
-        this.members = members
+    init {
         highlight = 0
     }
 

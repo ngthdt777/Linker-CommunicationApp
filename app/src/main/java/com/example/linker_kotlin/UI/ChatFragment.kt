@@ -127,7 +127,7 @@ class ChatFragment : Fragment() {
                         }
                     }
                     chatRoomList.sortWith { o1, o2 ->
-                        Integer.compare(o2.getHighLight()!!, o1.getHighLight()!!)
+                        (o2.getHighLight()!!).compareTo(o1.getHighLight()!!)
                     }
                     listAdapter.notifyDataSetChanged()
                 }
