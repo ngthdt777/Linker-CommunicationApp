@@ -55,7 +55,6 @@ class LoginService private constructor(){
 
         val account = core.createAccount(accountParams)
 
-        //setOnAccountRegisterStateChanged()
         core.addAuthInfo(authInfo)
         core.addAccount(account)
         core.defaultAccount = account
