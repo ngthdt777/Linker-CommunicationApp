@@ -12,20 +12,13 @@ import com.example.linker_kotlin.UI.AddGroupActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 
-class AddPersonIconAdapter(context: Context, userList: List<User>) :
+class AddPersonIconAdapter(var context: Context, private var userList: List<User>) :
     RecyclerView.Adapter<AddPersonIconAdapter.PersonViewHolder>() {
-    private val userList: List<User> = userList
-    private val context: Context = context
 
     class PersonViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var circleImageView: CircleImageView
-        var firstName: TextView
-        var removeButton: ImageView
-        init {
-            circleImageView = itemView.findViewById(R.id.search_icon_pic)
-            firstName = itemView.findViewById(R.id.search_item_first_name)
-            removeButton = itemView.findViewById(R.id.search_item_remove_button)
-        }
+        var circleImageView: CircleImageView = itemView.findViewById(R.id.search_icon_pic)
+        var firstName: TextView = itemView.findViewById(R.id.search_item_first_name)
+        var removeButton: ImageView = itemView.findViewById(R.id.search_item_remove_button)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
@@ -36,10 +29,10 @@ class AddPersonIconAdapter(context: Context, userList: List<User>) :
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
         val user: User = userList[position]
         Picasso.get().load(user.getProfilePicture()).into(holder.circleImageView)
-        holder.firstName.setText(user.getFirstName())
+        holder.firstName.text = user.getFirstName()
         holder.removeButton.setOnClickListener {
             (context as AddGroupActivity).removePerson(position)
-            context.unCheckPerson(user.getUserId())
+            (context as AddGroupActivity).unCheckPerson(user.getUserId())
         }
     }
 

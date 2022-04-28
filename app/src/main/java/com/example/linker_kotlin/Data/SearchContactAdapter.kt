@@ -6,25 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.example.linker_kotlin.R
 import com.example.linker_kotlin.UI.AddGroupActivity
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
+import org.jetbrains.annotations.NotNull
 
 
-class SearchContactAdapter(context: Context, searchItemList: MutableList<SearchItem>) :
+class SearchContactAdapter(mContext: Context, searchItemList: MutableList<SearchItem>) :
     RecyclerView.Adapter<SearchContactAdapter.SearchItemViewHolder>(), Filterable {
-    private val searchItemList: List<SearchItem>
-    private lateinit var searchItemListFull: List<SearchItem>
-    private val context: Context
+    private val searchItemList: List<SearchItem> = searchItemList
+    private var searchItemListFull: ArrayList<SearchItem> = searchItemList as ArrayList<SearchItem>
+    private val context = mContext
+    @NonNull
+    @NotNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
         val v: View = LayoutInflater.from(parent.context)
             .inflate(R.layout.add_group_person_item, parent, false)
         return SearchItemViewHolder(v)
     }
 
-    override fun onBindViewHolder(holder: SearchItemViewHolder, position: Int) {
+    override fun onBindViewHolder(@NonNull @NotNull holder: SearchItemViewHolder, position: Int) {
         val currentItem = searchItemList[position]
         Picasso.get().load(currentItem.getProfilePicture()).into(holder.profilePicture)
         holder.personName.text = currentItem.getDisplayName()
@@ -78,18 +82,9 @@ class SearchContactAdapter(context: Context, searchItemList: MutableList<SearchI
 
     class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var profilePicture: CircleImageView = itemView.findViewById(R.id.search_profile_picture)
-        var personName: TextView
-        var checkBox: CheckBox
+        var personName: TextView = itemView.findViewById(R.id.contact_name)
+        var checkBox: CheckBox = itemView.findViewById(R.id.search_checkbox)
 
-        init {
-            personName = itemView.findViewById(R.id.contact_name)
-            checkBox = itemView.findViewById(R.id.search_checkbox)
-        }
     }
 
-    init {
-        this.searchItemList = searchItemList
-        searchItemListFull = ArrayList<SearchItem>(searchItemList)
-        this.context = context
-    }
 }

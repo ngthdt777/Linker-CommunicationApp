@@ -15,7 +15,6 @@ class CurrentUser {
             return Holder.INSTANCE
         }
     }
-    private fun CurrentUser() {}
 
     @JvmName("getUser1")
     fun getUser() : User? { return user}

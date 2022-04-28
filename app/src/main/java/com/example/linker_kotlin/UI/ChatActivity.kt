@@ -175,7 +175,7 @@ class ChatActivity : AppCompatActivity() {
         val popupWindow = PopupWindow(popupView, 600, height, focusable)
 
         // show the popup window
-        // which view you pass in doesn't matter, it is only used for the window tolken
+        // which view you pass in doesn't matter, it is only used for the window token
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0)
         val memberList = popupView.findViewById<ListView>(R.id.popup_members_list)
         popupListAdapter = PopupListAdapter(this, (myChatRoom?.getMembers() as List<User>))

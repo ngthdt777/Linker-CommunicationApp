@@ -38,8 +38,10 @@ class AddGroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_group_layout)
+
         setSupportActionBar(findViewById(R.id.search_my_toolbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         context = this
         oldMemberList = ArrayList()
         chatroomID = -1
@@ -47,20 +49,20 @@ class AddGroupActivity : AppCompatActivity() {
         groupList = ArrayList()
         addButton = findViewById(R.id.add_button_done)
         groupName = findViewById(R.id.group_name)
+
         val searchText = findViewById<EditText>(R.id.search_people_bar)
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 adapter.filter.filter(s)
             }
-
             override fun afterTextChanged(s: Editable) {}
         })
 
         // Set up adapter for search list
         contactRecyclerView = findViewById(R.id.add_group_recyclerView)
         layoutManager = LinearLayoutManager(this)
-        adapter = SearchContactAdapter(this, searchingContacts!!)
+        adapter = SearchContactAdapter(this, searchingContacts)
         contactRecyclerView.layoutManager = layoutManager
         contactRecyclerView.adapter = adapter
 
@@ -103,9 +105,9 @@ class AddGroupActivity : AppCompatActivity() {
         })
         addButton.setOnClickListener(View.OnClickListener {
             val chatroomName = groupName.text.toString()
-            val membersList: MutableList<User> = ArrayList<User>(groupList)
+            val membersList: MutableList<User> = groupList
             membersList.add(CurrentUser.getInstance().getUser()!!)
-            if (groupList!!.size == 0) {
+            if (groupList.size == 0) {
                 Utility().printToast(applicationContext, "Group has to have a least 1 more member")
                 return@OnClickListener
             }
@@ -138,8 +140,7 @@ class AddGroupActivity : AppCompatActivity() {
                     })
                 }
                 Utility().printToast(applicationContext, "Modifying members")
-                val waitTimer: CountDownTimer
-                waitTimer = object : CountDownTimer(700, 100) {
+                val waitTimer: CountDownTimer = object : CountDownTimer(700, 100) {
                     override fun onTick(millisUntilFinished: Long) {
                         if (doneAddedDatabase <= 0) {
                             Utility().sendUpdateMember(groupList)
@@ -156,11 +157,11 @@ class AddGroupActivity : AppCompatActivity() {
                 }.start()
                 return@OnClickListener
             }
-            val newChatroom = MyChatRoom(chatroomName, 1, membersList)
-            Database.getInstance().getAPI().addChatRoom(newChatroom).enqueue(object : Callback<Int?> {
+            val newChatRoom = MyChatRoom(chatroomName,1,membersList)
+            Database.getInstance().getAPI().addChatRoom(newChatRoom).enqueue(object : Callback<Int?> {
                 override fun onResponse(call: Call<Int?>, response: Response<Int?>) {
                     val idChatroom = response.body()!!
-                    newChatroom.setId(idChatroom)
+                    newChatRoom.setId(idChatroom)
                     for (user in membersList) {
                         val model = UserInChatModel(idChatroom, user.getUserId()!!)
                         Database.getInstance().getAPI().addUserInChat(model).enqueue(object : Callback<Int?> {

@@ -14,10 +14,7 @@ import retrofit2.Response
 
 class ChatService {
     private lateinit var core : Core
-    //private var basicChatService = null
     private lateinit var remoteID_ChatroomIDMap: MutableMap<String, ChatRoom>
-
-    //fun getService() : ChatService? { return basicChatService }
 
     private object Holder { val INSTANCE = ChatService() }
     companion object{
@@ -38,9 +35,9 @@ class ChatService {
         if (chatRoom == null) {
             chatRoom = createBasicChatRoom(remoteURI)
             if (chatRoom != null) {
-                remoteID_ChatroomIDMap.put(remoteURI,chatRoom)
+                remoteID_ChatroomIDMap[remoteURI] = chatRoom
             }
-            }
+        }
         return chatRoom
     }
 
@@ -48,9 +45,8 @@ class ChatService {
         override fun onMessageReceived(core: Core, chatRoom: ChatRoom, message: ChatMessage) {
             super.onMessageReceived(core, chatRoom, message)
             val currentContext : Context = CallService.getInstance().getCurrentContext()
-            if (currentContext is ChatActivity){
-                val chatActivity = currentContext
-                //chatActivity.updateMessage()
+            if (currentContext is ChatActivity) {
+                currentContext.updateMessage()
             } else if (currentContext is MainActivity) run {
                 val idString = message.getCustomHeader("MessageID")
                 val actionString = message.getCustomHeader("action");
@@ -97,7 +93,7 @@ class ChatService {
 
     fun sendMessage(mgss: String, chatRoom: ChatRoom, id: Int, actionString: String?) {
         var mgs = mgss
-        val preMgs = "#####" + Integer.toString(id) + "#####"
+        val preMgs = "#####$id#####"
         mgs = preMgs + mgs
         if (actionString == "updateChatroomList") {
             mgs = "*#Refresh_chatroomList#*!!"
@@ -106,7 +102,7 @@ class ChatService {
         // We need to create a ChatMessage object using the ChatRoom
         val chatMessage = chatRoom.createMessageFromUtf8(mgs)
         if (id != 0) {
-            chatMessage.addCustomHeader("MessageID", Integer.toString(id))
+            chatMessage.addCustomHeader("MessageID", id.toString())
         }
         if (actionString != null) {
             chatMessage.addCustomHeader("action", actionString)

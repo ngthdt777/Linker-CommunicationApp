@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.linker_kotlin.Data.CurrentUser
+import com.example.linker_kotlin.Model.CallModel
 import com.example.linker_kotlin.R
 import com.example.linker_kotlin.Service.CallService
 import com.example.linker_kotlin.Service.Database.Database
@@ -25,6 +26,7 @@ import org.linphone.mediastream.video.capture.CaptureTextureView
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.math.roundToInt
 
 class CallGoing : AppCompatActivity() {
     var speaker: ImageButton? = null
@@ -43,8 +45,8 @@ class CallGoing : AppCompatActivity() {
     var time = 0.0
     var timeStared = false
     var isVideoCall = false
-    private lateinit var callerID : String
-    private lateinit var receiverID: String
+    private var callerID : String? = null
+    private var receiverID: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,9 +138,20 @@ class CallGoing : AppCompatActivity() {
 
         end = findViewById(R.id.end)
         end!!.setOnClickListener{
-            Database.getInstance().getAPI().getSingleChatRoomByUserIds(callerID, receiverID).enqueue(object : Callback<Int>{
+            Database.getInstance().getAPI().getSingleChatRoomByUserIds(callerID!!, receiverID!!).enqueue(object : Callback<Int>{
                 override fun onResponse(call: retrofit2.Call<Int>, response: Response<Int>) {
-                    TODO("Not yet implemented")
+                    val duration: Int = time.roundToInt()
+                    val callModel = CallModel(1,
+                                            callerID!!,
+                                            startTime!!,
+                                            response.body() as Int,
+                                            duration)
+                    Database.getInstance().getAPI().addCall(callModel).enqueue(object : Callback<Int?> {
+                        override fun onResponse(call: retrofit2.Call<Int?>,response: Response<Int?>) {
+                            CallService.getInstance().hangUp()
+                        }
+                        override fun onFailure(call: retrofit2.Call<Int?>, t: Throwable) {}
+                    })
                 }
 
                 override fun onFailure(call: retrofit2.Call<Int>, t: Throwable) {
@@ -192,7 +205,7 @@ class CallGoing : AppCompatActivity() {
     }
 
     private fun getTimerText(): String {
-        val rounded = Math.round(time).toInt()
+        val rounded = time.roundToInt()
         val seconds = rounded % 86400 % 3600 % 60
         val minutes = rounded % 86400 % 3600 / 60
         val hours = rounded % 86400 / 3600
