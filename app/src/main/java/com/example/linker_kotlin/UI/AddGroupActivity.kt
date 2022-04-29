@@ -1,5 +1,6 @@
 package com.example.linker_kotlin.UI
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -72,7 +73,9 @@ class AddGroupActivity : AppCompatActivity() {
         groupListGridView.layoutManager = groupListLayoutManager
         gridAdapter = AddPersonIconAdapter(this, groupList as ArrayList<User>)
         groupListGridView.adapter = gridAdapter
+
         Database.getInstance().getAPI().getAllUsers().enqueue(object : Callback<List<User>> {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 val extras = intent.extras
                 if (extras != null) {

@@ -65,7 +65,7 @@ class CallService {
                 Call.State.IncomingReceived -> {
                     val intent = Intent(currentContext, CallIncoming::class.java)
                     val remoteAddress = call.remoteAddress
-                    val id = "${remoteAddress.username}@${remoteAddress.domain}"
+                    val id = "sip:${remoteAddress.username}@${remoteAddress.domain}"
                     intent.putExtra("id",id)
                     Database.getInstance().getAPI().getUserById(id).enqueue(object : Callback<User> {
                         override fun onResponse( call : retrofit2.Call<User>, response : Response<User>
@@ -83,7 +83,7 @@ class CallService {
                 Call.State.OutgoingInit -> {
                     val intent = Intent(currentContext, CallGoing::class.java)
                     val remoteAddress = call.remoteAddress
-                    val id = "${remoteAddress.username}@${remoteAddress.domain}"
+                    val id = "sip:${remoteAddress.username}@${remoteAddress.domain}"
                     intent.putExtra("id",id)
                     intent.putExtra("receive",false)
 
