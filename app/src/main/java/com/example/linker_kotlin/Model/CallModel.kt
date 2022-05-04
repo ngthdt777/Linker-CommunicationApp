@@ -8,8 +8,8 @@ class CallModel(
     @SerializedName("type")
     private var type: Int,
     @SerializedName("fromuser")
-    private var callerID: String?
-    , @SerializedName("time")
+    private var callerID: String?,
+    @SerializedName("time")
     private var time: Date?,
     @SerializedName("id_cr")
     private var chatroomID: Int,
@@ -18,7 +18,7 @@ class CallModel(
 ) : MessageInterface {
 
     @SerializedName("id_call")
-    private var callID: Int = 0
+    private var callID: Int? = null
 
     override fun getContent(): String {
         return "Call duration: " + duration.toString() + "s"
@@ -29,7 +29,7 @@ class CallModel(
     }
 
     override fun getId(): Int {
-        return callID
+        return callID!!
     }
 
     override fun getTimeSent(): Date? {

@@ -125,6 +125,7 @@ class CallService {
                     val intent = Intent(currentContext, MainActivity::class.java)
                     currentContext.startActivity(intent)
                 }
+                else -> return
             }
         }
     }

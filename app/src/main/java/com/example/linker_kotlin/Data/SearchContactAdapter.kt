@@ -42,13 +42,15 @@ class SearchContactAdapter(mContext: Context, searchItemList: MutableList<Search
         holder.personName.text = currentItem.getDisplayName()
         holder.checkBox.setOnCheckedChangeListener(null)
         holder.checkBox.isChecked = currentItem.isClicked
-        holder.checkBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        holder.checkBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (!isChecked) {
+                (context as AddGroupActivity).removePerson(position)
                 return@OnCheckedChangeListener
             }
             Log.d("INFO", "onClick: running")
-            (context as AddGroupActivity).addPerson(currentItem as User)
+            (context as AddGroupActivity).addPerson(currentItem)
         })
+
     }
 
     override fun onViewRecycled(holder: SearchItemViewHolder) {

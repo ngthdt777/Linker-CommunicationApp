@@ -188,6 +188,7 @@ class AddGroupActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addPerson(user: User) {
         if (groupList.contains(user)) {
             return
@@ -196,6 +197,7 @@ class AddGroupActivity : AppCompatActivity() {
         gridAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun removePerson(position: Int) {
         groupList.removeAt(position)
         gridAdapter.notifyDataSetChanged()
@@ -205,15 +207,16 @@ class AddGroupActivity : AppCompatActivity() {
         for (i in searchingContacts.indices) {
             val searchItem: SearchItem = searchingContacts[i]
             if (searchItem.getUserId().equals(id)) {
-                searchItem.isClicked = false
-                searchingContacts[i] = searchItem
+                searchingContacts[i].isClicked = false
                 return
             }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun unCheckPerson(id: String?) {
         setClickUserFromId(id)
         adapter.notifyDataSetChanged()
     }
+
 }
