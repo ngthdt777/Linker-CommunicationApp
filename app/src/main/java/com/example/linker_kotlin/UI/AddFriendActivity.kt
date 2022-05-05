@@ -33,9 +33,10 @@ class AddFriendActivity : AppCompatActivity() {
         contactRecyclerView = findViewById(R.id.add_friend_recyclerView)
         layoutManager = LinearLayoutManager(this)
         adapter = PeopleContactAdapter(this, searchingContacts)
-        adapter.clearData()
+ 
         contactRecyclerView.layoutManager = layoutManager
         contactRecyclerView.adapter = adapter
+
         Database.getInstance().getAPI().getAllUsers().enqueue(object : Callback<List<User>> {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 val userList: List<User?> = LinkerApplication().getSingleChatroomUserList()
@@ -49,6 +50,7 @@ class AddFriendActivity : AppCompatActivity() {
                 searchText.isEnabled = true
             }
         })
+        
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -56,6 +58,7 @@ class AddFriendActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable) {}
         })
+
     }
 
     fun removeContact(id: String?) {
