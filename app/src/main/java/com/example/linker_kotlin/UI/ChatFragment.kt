@@ -62,7 +62,7 @@ class ChatFragment : Fragment() {
             listView.isClickable = true
             listView.onItemClickListener =
                 OnItemClickListener { parent, view, position, id ->
-                    val clickedChatroom: MyChatRoom = chatRoomList.get(position)
+                    val clickedChatroom: MyChatRoom = chatRoomList[position]
                     val i = Intent(this.context, ChatActivity::class.java)
                     i.putExtra("id", clickedChatroom.getId())
                     i.putExtra("displayName", clickedChatroom.getProminentMember()?.getDisplayName())

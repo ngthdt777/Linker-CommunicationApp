@@ -146,11 +146,11 @@ class CallGoing : AppCompatActivity() {
                                             startTime!!,
                                             response.body() as Int,
                                             duration)
-                    Database.getInstance().getAPI().addCall(callModel).enqueue(object : Callback<Int?> {
-                        override fun onResponse(call: retrofit2.Call<Int?>,response: Response<Int?>) {
+                    Database.getInstance().getAPI().addCall(callModel).enqueue(object : Callback<Int> {
+                        override fun onResponse(call: retrofit2.Call<Int>,response: Response<Int>) {
                             CallService.getInstance().hangUp()
                         }
-                        override fun onFailure(call: retrofit2.Call<Int?>, t: Throwable) {}
+                        override fun onFailure(call: retrofit2.Call<Int>, t: Throwable) {}
                     })
                 }
 

@@ -1,5 +1,6 @@
 package com.example.linker_kotlin.UI
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -72,7 +73,9 @@ class AddGroupActivity : AppCompatActivity() {
         groupListGridView.layoutManager = groupListLayoutManager
         gridAdapter = AddPersonIconAdapter(this, groupList as ArrayList<User>)
         groupListGridView.adapter = gridAdapter
+
         Database.getInstance().getAPI().getAllUsers().enqueue(object : Callback<List<User>> {
+            @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 val extras = intent.extras
                 if (extras != null) {
@@ -185,6 +188,7 @@ class AddGroupActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun addPerson(user: User) {
         if (groupList.contains(user)) {
             return
@@ -193,6 +197,7 @@ class AddGroupActivity : AppCompatActivity() {
         gridAdapter.notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun removePerson(position: Int) {
         groupList.removeAt(position)
         gridAdapter.notifyDataSetChanged()
@@ -202,15 +207,16 @@ class AddGroupActivity : AppCompatActivity() {
         for (i in searchingContacts.indices) {
             val searchItem: SearchItem = searchingContacts[i]
             if (searchItem.getUserId().equals(id)) {
-                searchItem.isClicked = false
-                searchingContacts[i] = searchItem
+                searchingContacts[i].isClicked = false
                 return
             }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun unCheckPerson(id: String?) {
         setClickUserFromId(id)
         adapter.notifyDataSetChanged()
     }
+
 }

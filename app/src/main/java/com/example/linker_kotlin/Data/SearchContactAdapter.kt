@@ -1,5 +1,6 @@
 package com.example.linker_kotlin.Data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,9 +18,10 @@ import org.jetbrains.annotations.NotNull
 
 class SearchContactAdapter(mContext: Context, searchItemList: MutableList<SearchItem>) :
     RecyclerView.Adapter<SearchContactAdapter.SearchItemViewHolder>(), Filterable {
-    private val searchItemList: List<SearchItem> = searchItemList
-    private var searchItemListFull: ArrayList<SearchItem> = searchItemList as ArrayList<SearchItem>
-    private val context = mContext
+        private val searchItemList: List<SearchItem> = searchItemList
+        val searchItemListFull: List<SearchItem> = searchItemList as ArrayList<SearchItem>
+        val context = mContext
+
     @NonNull
     @NotNull
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchItemViewHolder {
@@ -28,19 +30,27 @@ class SearchContactAdapter(mContext: Context, searchItemList: MutableList<Search
         return SearchItemViewHolder(v)
     }
 
+    class SearchItemViewHolder(@NotNull @NonNull itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var profilePicture: CircleImageView = itemView.findViewById(R.id.search_profile_picture)
+        var personName: TextView = itemView.findViewById(R.id.contact_name)
+        var checkBox: CheckBox = itemView.findViewById(R.id.search_checkbox)
+    }
+
     override fun onBindViewHolder(@NonNull @NotNull holder: SearchItemViewHolder, position: Int) {
         val currentItem = searchItemList[position]
         Picasso.get().load(currentItem.getProfilePicture()).into(holder.profilePicture)
         holder.personName.text = currentItem.getDisplayName()
         holder.checkBox.setOnCheckedChangeListener(null)
         holder.checkBox.isChecked = currentItem.isClicked
-        holder.checkBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+        holder.checkBox.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
             if (!isChecked) {
+                (context as AddGroupActivity).removePerson(position)
                 return@OnCheckedChangeListener
             }
             Log.d("INFO", "onClick: running")
-            (context as AddGroupActivity).addPerson(currentItem as User)
+            (context as AddGroupActivity).addPerson(currentItem)
         })
+
     }
 
     override fun onViewRecycled(holder: SearchItemViewHolder) {
@@ -73,6 +83,7 @@ class SearchContactAdapter(mContext: Context, searchItemList: MutableList<Search
             results.values = filterList
             return results
         }
+        @SuppressLint("NotifyDataSetChanged")
         override fun publishResults(constraint: CharSequence, results: FilterResults) {
             searchItemList.clear()
             searchItemList.addAll(results.values as List<SearchItem>)
@@ -80,11 +91,5 @@ class SearchContactAdapter(mContext: Context, searchItemList: MutableList<Search
         }
     }
 
-    class SearchItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var profilePicture: CircleImageView = itemView.findViewById(R.id.search_profile_picture)
-        var personName: TextView = itemView.findViewById(R.id.contact_name)
-        var checkBox: CheckBox = itemView.findViewById(R.id.search_checkbox)
-
-    }
 
 }

@@ -30,6 +30,7 @@ class AddPersonIconAdapter(var context: Context, private var userList: List<User
         val user: User = userList[position]
         Picasso.get().load(user.getProfilePicture()).into(holder.circleImageView)
         holder.firstName.text = user.getFirstName()
+
         holder.removeButton.setOnClickListener {
             (context as AddGroupActivity).removePerson(position)
             (context as AddGroupActivity).unCheckPerson(user.getUserId())

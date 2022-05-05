@@ -55,7 +55,7 @@ public class MainActivity : FragmentActivity() {
             chatFragment.updateChatroom(chatRoomID)
         }
     }
-    val navListener =
+    private val navListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             var selectedFragment: Fragment? = null
             var tag = "CHAT"
