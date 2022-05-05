@@ -171,20 +171,16 @@ class AddGroupActivity : AppCompatActivity() {
                             override fun onResponse(call: Call<Int?>, response: Response<Int?>) {
                                 if (user.getUserId()
                                         .equals(membersList[membersList.size - 1].getUserId())
-                                ) {
-                                    Utility().sendUpdateMember(groupList)
-                                    val i = Intent(context, MainActivity::class.java)
-                                    startActivity(i)
-                                }
+                                ) { Utility().sendUpdateMember(groupList) }
                             }
-
                             override fun onFailure(call: Call<Int?>, t: Throwable) {}
                         })
                     }
                 }
-
                 override fun onFailure(call: Call<Int?>, t: Throwable) {}
             })
+            val i = Intent(context, MainActivity::class.java)
+            startActivity(i)
         })
     }
 
