@@ -161,6 +161,11 @@ class CallGoing : AppCompatActivity() {
         }
     }
 
+    fun changeVideoIcon(){
+        if (CallService.getInstance().getCore().currentCall?.params?.videoEnabled() == true)
+            (video as ImageButton).setImageResource(R.drawable.call_video)
+        else (video as ImageButton).setImageResource(R.drawable.call_unvideo)
+    }
     fun changeLayoutToCall() {
         videoView?.visibility = View.INVISIBLE
         callName?.visibility = View.VISIBLE

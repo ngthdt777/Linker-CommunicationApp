@@ -72,6 +72,9 @@
                 android:label="Linker_Kotlin"
                 android:value=".UI.MainActivity" />
         </activity>
+        <service android:name="org.linphone.core.tools.service.CoreService"
+            android:foregroundServiceType="phoneCall|camera|microphone"
+            android:stopWithTask="false" />
 
     </application>
 </manifest>

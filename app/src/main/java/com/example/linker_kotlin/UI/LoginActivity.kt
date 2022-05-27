@@ -1,6 +1,8 @@
 package com.example.linker_kotlin.UI
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.Button
@@ -43,6 +45,16 @@ class LoginActivity : AppCompatActivity() {
         toRegisterView.setOnClickListener{
             val intent = Intent(this,RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        val pm = this.packageManager
+        val hasRecordPerm = pm.checkPermission(
+            Manifest.permission.RECORD_AUDIO,
+            this.packageName
+        )
+        if (hasRecordPerm != PackageManager.PERMISSION_GRANTED) {
+            val arrayPermission = arrayOf(Manifest.permission.RECORD_AUDIO)
+            requestPermissions(arrayPermission, 0)
         }
     }
 

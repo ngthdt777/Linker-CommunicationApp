@@ -116,8 +116,12 @@ class CallService {
                     core.currentCall?.acceptUpdate(core.currentCall?.remoteParams)
                     if (core.currentCall?.params!!.videoEnabled()){
                         (currentContext as CallGoing).changeLayoutToVideo()
+                        (currentContext as CallGoing).changeVideoIcon()
                     }
-                    else (currentContext as CallGoing).changeLayoutToCall()
+                    else{
+                            (currentContext as CallGoing).changeLayoutToCall()
+                        (currentContext as CallGoing).changeVideoIcon()
+                    }
                 }
                 Call.State.Error -> {}
                 Call.State.End -> {}
